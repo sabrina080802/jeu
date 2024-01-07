@@ -1,0 +1,93 @@
+body {
+  margin: 0;
+  background-color: rgb(25, 27, 36);
+  min-height: 100vh;
+  font-size: 1vw;
+  color-scheme: dark;
+}
+* {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+}
+button {
+  cursor: pointer;
+  outline: 0;
+}
+header {
+  display: flex;
+  align-items: center;
+  background-color: rgba(15, 15, 15);
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.35);
+  padding-right: 1rem;
+}
+header .games {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  padding-left: 1em;
+  margin-left: 1em;
+}
+header .games .game {
+  padding: 1em min(1em, 2vw);
+  cursor: pointer;
+}
+header .games .plus {
+  background-color: rgba(32, 32, 32);
+  font-weight: bold;
+  font-size: 1.4em;
+  width: 1.75em;
+  height: 1.75em;
+  border-radius: 0.25em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0;
+  margin-left: 1em;
+}
+header > button {
+  padding: 0.75em 1.25em;
+  font-size: 1em;
+  margin: 0;
+  border: none;
+  background-color: rgb(30, 144, 255);
+  border-radius: 0.35em;
+  box-shadow: 0 -0.25em 0 rgba(0, 0, 0, 0.35) inset;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+header .match {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0.25em 0.5em;
+  margin-left: 0;
+  font-size: 1.1em;
+}
+header .match button {
+  font-size: 1em;
+  background-color: rgb(30, 144, 255);
+  padding: 0.65em;
+  padding-left: 1em;
+  margin-left: -0.75em;
+  border-top-right-radius: 0.5em;
+  border-bottom-right-radius: 0.5em;
+  box-shadow: -0.15em -0.25em 0 rgba(0, 0, 0, 0.35) inset;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+header .match img {
+  height: 5em;
+  margin-left: 0.5em;
+  z-index: 2;
+  border-radius: 150px;
+}
+
+@media (max-width: 1000px) {
+  body {
+    font-size: 1.2vw;
+  }
+}
+@media (max-width: 600px) {
+  body {
+    font-size: 1.8vw;
+  }
+}

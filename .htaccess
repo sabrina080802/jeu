@@ -1,0 +1,4 @@
+RewriteEngine on
+RewriteCond %{REQUEST_URI} !PostForm.php
+RewriteCond %{REQUEST_URI} !Main.php
+RewriteRule	^.*$	index.php?page=%{REQUEST_URI}&%{QUERY_STRING} [L]
