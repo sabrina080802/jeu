@@ -7,9 +7,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap"
       rel="stylesheet"
     />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
+      rel="stylesheet"
+    />
+    <script src ="popup.js"></script>
+
     <title>Document</title>
   </head>
   <body>
@@ -23,8 +29,54 @@
         <div class="game">Fortnite</div>
         <div class="game">Apex</div>
         <div class="game plus">+</div>
+        <nav>
+          <ul>
+            <li class="deroulant"><a href="#"></a></li>
+            <ul class="sous">
+              <li><a href="#">Battelfield </a></li>
+              <li><a href="#">RocketLigue</a></li>
+              <li><a href="#">TrackMania</a></li>
+            </ul>
+          </ul>
+        </nav>
+        
       </div>
-      <button src="connexion.html">Connexion</button>
+    </div>
+    <button id="connexionBtn" onclick="togglePopup()">Connexion</button>
+  </header>
+
+  <div id="popup" class="popup">
+    <div class="popup-content">
+      <div class="auth-popup">
+        <h4 class="connexion">Connexion</h4>
+        <p>Adresse mail :</p>
+        <input
+          type="email"
+          placeholder="abc@example.fr"
+          required
+          minlength="4"
+          maxlength="8"
+        />
+        <p>Mot de passe :</p>
+        <input type="password" placeholder="••••••" />
+        <button class="mdp">Mot de passe oubliée ?</button>
+        <div class="register-menu">
+          <button class="inscri">Pas membre ?</button>
+          <button class="co">Connexion</button>
+        </div>
+        <button class="closeBtn" onclick="togglePopup()">X</button>
+        <div class="social-networks">
+          <button><img src="PlayStation.png" name="playstation" /></button>
+          <button><img src="Xbox.png" name="xbox" /></button>
+          <button><img src="EpicGames.png" name="epic games" /></button>
+          <button><img src="Facebook.png" name="facebook" /></button>
+          <button><img src="google.png" name="google" /></button>
+        </div>
+      </div>
     </header>
   </body>
 </html>
+
+
+   
+    
