@@ -3,6 +3,8 @@
 const ROOT_PATH = '/dossier/';
 
 const SRC_PATH = __DIR__ . '/src/';
+const APP_PATH = __DIR__ . '/public/';
+
 const VIEW_PATH = __DIR__ . '/public/views/';
 const API_PATH = __DIR__ . '/public/api/';
 const TEMPLATES_PATH = __DIR__ . '/public/template/';

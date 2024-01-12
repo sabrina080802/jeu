@@ -60,7 +60,7 @@ header .games .game:not(.plus):hover::after {
   left: 0;
 }
 
-header .games .plus {
+header .btnPlus {
   background-color: rgba(32, 32, 32);
   font-weight: bold;
   font-size: 1.4em;
@@ -235,4 +235,57 @@ input {
   position: absolute;
   right: 0;
   top: 0;
+}
+
+#deroulant {
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#gamesList {
+  position: fixed;
+  background-color: rgb(45, 46, 58);
+  padding: 10px;
+  border-radius: 1em;
+  box-shadow: 0 2px 7px 3px rgba(0, 0, 0, 0.75);
+}
+
+#gamesList::after {
+  /*pour afficher */
+  content: "";
+  position: absolute;
+
+  bottom: 0;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  border-radius: 15px;
+  background-color: white;
+  transition: width 0.25s cubic-bezier(0, 0.66, 0.76, 1.47),
+    left 0.25s cubic-bezier(0, 0.66, 0.76, 1.47), transform 0.25s ease-out;
+}
+#gamesList[hidden] {
+  display: none;
+}
+
+#gamesList ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#gamesList li {
+  padding: 5px;
+  cursor: pointer;
+}
+#gamesList li a {
+  text-decoration: none;
+  color: white;
+  padding-top: 0.5em;
+  display: block;
+}
+#gamesList li a:hover {
+  transform: scale(1.1);
+  text-shadow: 2px 0 black;
+  color: #fcd21c;
 }

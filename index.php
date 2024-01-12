@@ -19,13 +19,26 @@ if(sizeof($ext) == 1) {
         //afficher home
         echo $route->getPageContent('home');
     }
-    else if($route->pageExists($page)) {
-        //afficher $page.html
-        echo $route->getPageContent($page);
-    }
     else{
-        //show 404
-        echo $route->getPageContent('404');
+        $apiRequest = $route->getAPIRequest($page);
+        if($apiRequest != null){
+            $getAccount = new $apiRequest();
+            $result = $getAccount->execute();
+            if($result === false){
+                http_response_code(400);
+            }
+            else{
+                echo $result;
+            }
+        }
+        else if($route->pageExists($page)) {
+            //afficher $page.html
+            echo $route->getPageContent($page);
+        }
+        else{
+            //show 404
+            echo $route->getPageContent('404');
+        }
     }
 }
 else{
