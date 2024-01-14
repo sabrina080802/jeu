@@ -83,6 +83,7 @@ header > button {
   border: 1px solid rgba(255, 255, 255, 0.35);
 }
 header .match {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -224,8 +225,18 @@ input {
   justify-content: center;
   align-items: center;
 }
-
+.title {
+  font-family: "Bebas Neue", sans-serif;
+  text-align: center;
+  font-weight: bold;
+  font-size: 3em;
+  margin: 0;
+  padding: 0.5em;
+  border-bottom: 1px solid white;
+  padding-bottom: 0.35px;
+}
 .popup-content {
+  position: relative;
   padding: 20px;
   border-radius: 10px;
 }
@@ -288,4 +299,97 @@ input {
   transform: scale(1.1);
   text-shadow: 2px 0 black;
   color: #fcd21c;
+}
+
+#create_match .head {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: -4em;
+  margin-bottom: 2em;
+  margin-left: -2em;
+  margin-right: -1em;
+}
+#create_match .head h2 {
+  border-bottom: none;
+  margin-top: 0.5em;
+  margin-right: 1.75em;
+}
+#create_match .head .img {
+  width: 8em;
+}
+#create_match .match {
+  background-color: rgb(32, 32, 32);
+}
+#create_match .match::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--main-color) 50%,
+    transparent 100%
+  );
+}
+
+.choix {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.choix p:first-of-type {
+  margin-top: 0;
+}
+.fermeture {
+  padding: 0.75em 1.25em;
+  font-size: 1.2em;
+  margin: 0 auto;
+  background-color: var(--main-color);
+  border-radius: 0.35em;
+  box-shadow: 0 -0.25em 0 rgba(0, 0, 0, 0.35) inset;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  display: block;
+  margin-top: 2em;
+}
+
+select {
+  border: none;
+  width: 200px;
+  text-align: center;
+  border-radius: 0.5em;
+}
+.user-select {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(63, 63, 63, 0.75);
+  border-radius: 150px;
+  width: 70%;
+  box-shadow: 0 2px 7px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+}
+.user-select > div {
+  flex: 1;
+  padding: 0.35em;
+  font-size: 1.4em;
+  font-variant: small-caps;
+  text-align: center;
+}
+.user-select > button {
+  position: relative;
+  color: var(--main-color);
+  background-color: transparent !important;
+  height: 100%;
+  width: 2em;
+}
+.user-select > button:first-of-type {
+  border-right: 1px solid var(--main-color);
+}
+.user-select > button:last-of-type {
+  border-left: 1px solid var(--main-color);
 }

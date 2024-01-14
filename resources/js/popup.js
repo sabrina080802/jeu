@@ -1,10 +1,72 @@
-function togglePopup() {
-  var popup = document.getElementById("popup");
+//ZONE DE SABRINA
+
+//TODO :
+// Faire un fetch dans une fonction pour requêter l'API
+// Le lien EST LE SUIVANT BAWI : http://localhost/dossier/account/getAccount
+// Save le résultat JSON dans une variable
+// Faire un console log du résultat
+
+app
+  .request("http://localhost/dossier/account/getAccount", {
+    id: 1,
+  })
+  .then((result) => {
+    console.log(result);
+  });
+
+function togglePopup(popupName) {
+  var popup = document.getElementById(popupName);
   if (popup.style.display === "flex") {
     popup.style.display = null;
   } else {
     popup.style.display = "flex";
+    if (popupName == "create_match" && !popup.hasAttribute("built")) {
+      popup.setAttribute("built", "");
+      buildCreateMatchPopup();
+    }
   }
+}
+
+function buildCreateMatchPopup() {
+  const choiceData = [
+    {
+      name: "platform",
+      title: "Choix de la plateforme",
+      list: ["steam", "xbox", "playstation", "epic games"],
+    },
+    {
+      name: "games",
+      title: "Choix du jeu",
+      list: ["Fortnite", "Call of duty", "Rocket League"],
+    },
+    {
+      name: "mode",
+      title: "Choix du mode de jeu ",
+      list: ["1v1", "3v3", "capture the flags"],
+    },
+    {
+      name: "map",
+      title: "Choix de la map  ",
+      list: ["los angeles", "paris", "londres"],
+    },
+  ];
+
+  const choiceList = document.getElementById("choices");
+  choiceData.forEach((choiceData) => {
+    const choiceName = document.createElement("p");
+    choiceName.innerHTML = choiceData.title;
+
+    const component = new Selector();
+    component.setValues(choiceData.list);
+
+    choiceList.appendChild(choiceName);
+    choiceList.appendChild(component.container);
+  });
+
+  const btnFindMatch = document.createElement("button");
+  btnFindMatch.innerHTML = "Trouver un match";
+  btnFindMatch.className = "fermeture";
+  choiceList.appendChild(btnFindMatch);
 }
 
 document.addEventListener("DOMContentLoaded", function () {
@@ -25,14 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
     gameList.style.top = Y + "px";
     var x = bounds.x + bounds.width / 2 - gameList.offsetWidth / 2;
     gameList.style.left = x + "px";
-    console.log(gameList);
   });
-
-  // window.addEventListener("click", function (event) {
-  //   if (!btnPlus.contains(event.target) && !gameList.contains(event.target)) {
-  //     gamesList.classList.add("hidden");
-  //   }
-  // });
 
   window.addEventListener("click", function (event) {
     if (event.target == btnPlus) {

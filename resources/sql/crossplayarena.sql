@@ -1,0 +1,35 @@
+CREATE DATABASE crossplayarena CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE crossplayarena;
+
+CREATE TABLE account(
+    identifier INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    email VARCHAR(255) NOT NULL,
+    pass VARCHAR(255) NOT NULL,
+    creation_date DATETIME NOT NULL DEFAULT NOW(),
+    UNIQUE KEY(email),
+    PRIMARY KEY(identifier)
+)ENGINE=INNODB;
+
+
+CREATE TABLE game(
+    identifier SMALLINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    PRIMARY KEY(identifier)
+)ENGINE=INNODB;
+
+CREATE TABLE platform(
+    identifier TINYINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name VARCHAR(255) NOT NULL,
+    logo VARCHAR(255) NOT NULL,
+    PRIMARY KEY(identifier)
+)ENGINE=INNODB;
+
+CREATE TABLE game_platform(
+    game SMALLINT UNSIGNED NOT NULL,
+    platform TINYINT UNSIGNED NOT NULL,
+    PRIMARY KEY(game, platform)
+)ENGINE=INNODB;
+
+ALTER TABLE game_platform ADD CONSTRAINT fk_gameplatform_game FOREIGN KEY(game) REFERENCES game(identifier) ON UPDATE CASCADE ON DELETE CASCADE;
+ALTER TABLE game_platform ADD CONSTRAINT fk_gameplatform_platform FOREIGN KEY(platform) REFERENCES platform(identifier) ON UPDATE CASCADE ON DELETE CASCADE;
+

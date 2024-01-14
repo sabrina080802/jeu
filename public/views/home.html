@@ -14,69 +14,26 @@
       href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
       rel="stylesheet"
     />
-    <script src ="popup.js"></script>
+    <script src="popup.js"></script>
+    <script src="selector.js"></script>
 
     <title>Document</title>
   </head>
+
   <body>
-    <header>
-      <div class="match">
-        <img src="logo_small.png" />
-        <button>Créer un match</button>
-      </div>
-      <div class="games">
-        <div class="game">Call Of Duty</div>
-        <div class="game">Fortnite</div>
-        <div class="game">Apex</div>
-        <nav>
-          <ul>
-            <div class="btnPlus" id="btnPlus">+</div>
-            <div id="gamesList" hidden>
-            <ul class="sous">
-              <li><a class="game">Battelfield </a></li>
-              <li><a class="game">RocketLigue</a></li>
-              <li><a class="game">TrackMania</a></li>
-            </ul>
-          </ul>
-        </nav>
+    {{header}} {{popups.connect}}
+
+    <div id="create_match" class="popup">
+      <div class="popup-content match">
+        <div class="head">
+          <img class="img" src="logo_small.png" />
+          <h2 class="title">Créer votre Match</h2>
         </div>
+        <button class="closeBtn" onclick="togglePopup('create_match')">
+          X
+        </button>
+        <div class="choix" id="choices"></div>
       </div>
     </div>
-    <button id="connexionBtn" onclick="togglePopup()">Connexion</button>
-  </header>
-
-  <div id="popup" class="popup">
-    <div class="popup-content">
-      <div class="auth-popup">
-        <h4 class="connexion">Connexion</h4>
-        <p>Adresse mail :</p>
-        <input
-          type="email"
-          placeholder="abc@example.fr"
-          required
-          minlength="4"
-          maxlength="8"
-        />
-        <p>Mot de passe :</p>
-        <input type="password" placeholder="••••••" />
-        <button class="mdp">Mot de passe oubliée ?</button>
-        <div class="register-menu">
-          <button class="inscri">Pas membre ?</button>
-          <button class="co">Connexion</button>
-        </div>
-        <button class="closeBtn" onclick="togglePopup()">X</button>
-        <div class="social-networks">
-          <button><img src="PlayStation.png" name="playstation" /></button>
-          <button><img src="Xbox.png" name="xbox" /></button>
-          <button><img src="EpicGames.png" name="epic games" /></button>
-          <button><img src="Facebook.png" name="facebook" /></button>
-          <button><img src="google.png" name="google" /></button>
-        </div>
-      </div>
-    </header>
   </body>
 </html>
-
-
-   
-    

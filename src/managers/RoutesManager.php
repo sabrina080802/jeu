@@ -1,6 +1,16 @@
 <?php namespace Magy\Managers;
 
 class RoutesManager{
+    private $controllers = [];
+
+    public function __construct(){
+        $path = CONFIG_PATH . 'Routing/';
+        $fileList = scandir($path);
+        $fileCount = sizeof($fileList);
+        for($i = 2;$i < $fileCount;$i++){
+            include $path . $fileList[$i];
+        }
+    }
     public function getAPIRequest($url){
         // /boutique
         // account/getAccount
@@ -48,8 +58,20 @@ class RoutesManager{
     }
     public function getPageContent($url){
         // recup le contenu de la page
-        $content = file_get_contents(VIEW_PATH . $url . ".html");
+        if(isset($this->controllers[$url])){
+            $ctrlClass = $this->controllers[$url];
+            $controller = new $ctrlClass(file_get_contents(VIEW_PATH . $url . ".html"));
+            $content = $controller->getContent();
+        }
+        else{
+            $content = file_get_contents(VIEW_PATH . $url . ".html");
+        }
+
         return $content;
+    }
+    public function setController($pageName, $controllerClass)
+    {
+        $this->controllers[$pageName] = $controllerClass;
     }
 }
 

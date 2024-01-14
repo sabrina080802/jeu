@@ -4,6 +4,8 @@ include "config.php";
 include SRC_PATH . "Autoloader.php";
 
 use Magy\Managers\RoutesManager;
+use Magy\Managers\TemplatesManager;
+use Magy\Managers\JsManager;
 
 $route = new RoutesManager();
 
@@ -17,29 +19,32 @@ if(sizeof($ext) == 1) {
     //page can be empty
     if($page == ''){
         //afficher home
-        echo $route->getPageContent('home');
+        $pageContent = $route->getPageContent('home');
     }
     else{
         $apiRequest = $route->getAPIRequest($page);
         if($apiRequest != null){
-            $getAccount = new $apiRequest();
-            $result = $getAccount->execute();
-            if($result === false){
+            $req = new $apiRequest();
+            $pageContent = $req->execute();
+            if($pageContent === false){
                 http_response_code(400);
-            }
-            else{
-                echo $result;
+                return;
             }
         }
         else if($route->pageExists($page)) {
             //afficher $page.html
-            echo $route->getPageContent($page);
+            $pageContent = $route->getPageContent($page);
         }
         else{
             //show 404
-            echo $route->getPageContent('404');
+            $pageContent = $route->getPageContent('404');
         }
     }
+    
+    $templates = new TemplatesManager();
+    $pageContent = $templates->translate($pageContent);
+    $pageContent = str_replace('<head>', '<head><script>' . JsManager::getFramework() . '</script>', $pageContent);
+    echo $pageContent;
 }
 else{
     $ext = $ext[sizeof($ext) - 1];
@@ -51,9 +56,9 @@ else{
             break;
 
         case 'js':
-            $path = JS_PATH . $page;
+            JsManager::readFile($page);
             header('content-type: text/javascript');
-            break;
+            return;
 
         case 'png':
         case 'jpg':
