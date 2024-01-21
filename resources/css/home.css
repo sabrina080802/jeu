@@ -115,8 +115,10 @@ header .match img {
   flex-direction: column;
   align-items: center;
   width: 60em;
+  max-width: 600px;
   height: 30em;
   border-radius: 1.5em;
+  overflow: hidden;
   background-color: rgb(36, 38, 49);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.35),
     0 -0.5em 0 2px rgba(0, 0, 0, 0.35) inset;
@@ -126,7 +128,7 @@ header .match img {
 .connexion {
   font-family: "Bebas Neue", sans-serif;
   text-align: center;
-  font-weight: bold;
+  font-weight: normal;
   font-size: 3em;
   margin: 0;
   padding: 0.5em;
@@ -224,6 +226,17 @@ input {
   z-index: 1000;
   justify-content: center;
   align-items: center;
+  transition: background-color 0.15s ease-out;
+}
+.popup > div {
+  transition: transform 0.15s ease-out, opacity 0.15s ease-out;
+}
+.popup[hidden] {
+  background-color: transparent;
+}
+.popup[hidden] > div {
+  transform: translateY(2em) scale(0.8);
+  opacity: 0;
 }
 .title {
   font-family: "Bebas Neue", sans-serif;
@@ -246,6 +259,10 @@ input {
   position: absolute;
   right: 0;
   top: 0;
+  padding: 0.8em 1em;
+  border-bottom-left-radius: 0.5em;
+  box-shadow: 3px -3px 5px rgba(0, 0, 0, 0.35) inset;
+  background-color: rgba(255, 255, 255, 0.05);
 }
 
 #deroulant {

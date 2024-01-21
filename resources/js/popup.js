@@ -6,20 +6,19 @@
 // Save le résultat JSON dans une variable
 // Faire un console log du résultat
 
-app
-  .request("http://localhost/dossier/account/getAccount", {
-    id: 1,
-  })
-  .then((result) => {
-    console.log(result);
-  });
-
-function togglePopup(popupName) {
+async function togglePopup(popupName) {
   var popup = document.getElementById(popupName);
   if (popup.style.display === "flex") {
+    popup.setAttribute("hidden", "");
+    await app.wait(250);
     popup.style.display = null;
   } else {
+    popup.setAttribute("hidden", "");
     popup.style.display = "flex";
+    await app.wait(0);
+    popup.removeAttribute("hidden");
+    await app.wait(250);
+
     if (popupName == "create_match" && !popup.hasAttribute("built")) {
       popup.setAttribute("built", "");
       buildCreateMatchPopup();

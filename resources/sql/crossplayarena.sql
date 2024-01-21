@@ -5,6 +5,7 @@ CREATE TABLE account(
     identifier INT UNSIGNED NOT NULL AUTO_INCREMENT,
     email VARCHAR(255) NOT NULL,
     pass VARCHAR(255) NOT NULL,
+    pseudo VARCHAR(255) NOT NULL,
     creation_date DATETIME NOT NULL DEFAULT NOW(),
     UNIQUE KEY(email),
     PRIMARY KEY(identifier)
@@ -33,3 +34,11 @@ CREATE TABLE game_platform(
 ALTER TABLE game_platform ADD CONSTRAINT fk_gameplatform_game FOREIGN KEY(game) REFERENCES game(identifier) ON UPDATE CASCADE ON DELETE CASCADE;
 ALTER TABLE game_platform ADD CONSTRAINT fk_gameplatform_platform FOREIGN KEY(platform) REFERENCES platform(identifier) ON UPDATE CASCADE ON DELETE CASCADE;
 
+CREATE TABLE auth_token(
+    identifier BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    token VARCHAR(100) NOT NULL,
+    account INT UNSIGNED NOT NULL,
+    PRIMARY KEY(identifier)
+)ENGINE=INNODB;
+
+ALTER TABLE auth_token ADD CONSTRAINT fk_authtok_account FOREIGN KEY(account) REFERENCES account(identifier) ON UPDATE CASCADE ON DELETE CASCADE;

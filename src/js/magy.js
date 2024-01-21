@@ -2,10 +2,23 @@ const app = new Magy();
 
 function Magy() {
   const self = this;
+  let isReady = false;
+  let waitingCalls = [];
   new EventHandler(self);
 
   document.addEventListener("DOMContentLoaded", onDOMContentLoaded);
 
+  this.run = (callback) => {
+    if (isReady) callback();
+    else {
+      waitingCalls.push(callback);
+    }
+  };
+  this.wait = (time) => {
+    return new Promise((resolve) => {
+      setTimeout(resolve, time);
+    });
+  };
   this.request = async (url, data, method = "POST") => {
     try {
       const formData = new FormData();
@@ -34,7 +47,11 @@ function Magy() {
   this.loadEntity = (name) => {};
 
   function onDOMContentLoaded() {
-    const scriptList = document.head.querySelectorAll("preload");
+    isReady = true;
+    waitingCalls.forEach((x) => {
+      x();
+    });
+    waitingCalls = null;
   }
 }
 

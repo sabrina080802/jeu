@@ -9,10 +9,6 @@ use Magy\Managers\JsManager;
 
 $route = new RoutesManager();
 
-//http://google.com/index.php?test=2
-//$_GET['test'] == 2
-//$_POST['test']
-
 $page = str_replace(ROOT_PATH, '', $_GET['page']);
 $ext = explode('.', $page);
 if(sizeof($ext) == 1) {

@@ -14,11 +14,6 @@ class GetAccount extends REST{
     public function process($data){
         $db = DbManager::getDatabase('crossplayarena');
         $this->account = $db->first('SELECT * FROM account WHERE identifier = @id', $data);
-        /*$this->account = (object)[
-            'identifier' => 0,
-            'name' => 'Bouh !',
-            'email' => 'Mon super email incroyable'
-        ];*/
     }
     public function getResponse(){
         return $this->account;

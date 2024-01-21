@@ -14,7 +14,7 @@ class RoutesManager{
     public function getAPIRequest($url){
         // /boutique
         // account/getAccount
-        $url = explode('/', strtolower($url));
+        $url = explode('/', $url);
         // ['account', 'getaccount']
 
         $componentsCount = sizeof($url); // 2
@@ -30,11 +30,11 @@ class RoutesManager{
 
             //parcours la liste des fichiers
             for($j = 0;$j < $fileCount;$j++){
-                if(strtolower($fileList[$j]) == $url[$i]){
+                if(strtolower($fileList[$j]) == strtolower($url[$i])){
                     $path .= $fileList[$j];
                     if(!is_file($path)){
                         $path .= '/'; // construire le chemin pour continuer de parcourir
-                        $ns .= '\\' . $fileList[$j]; //Construire le namespace pour pouvoir créer l'objet
+                        $ns .= '\\' . $url[$i]; //Construire le namespace pour pouvoir créer l'objet
                     }
                     
                     if($i == $componentsCount - 1){

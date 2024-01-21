@@ -7,18 +7,24 @@ class Database{
         $this->pdo = new \PDO("mysql:host=" . $host .';dbname=' . $name .';default_charset=utf8mb4', $user, $password, $options);
     }
     public function first($request, $params=[]){
-        foreach ($params as $key => $value) {
-            $request = str_replace('@' . $key, $value, $request);
-        }
-
-        return (object)$this->pdo->query($request)->fetch(\PDO::FETCH_ASSOC);
+        $query = $this->pdo->prepare($request);
+        $this->bindParams($request, $query, $params);
+        $query->execute();
+        return $query->fetch(\PDO::FETCH_ASSOC);
     }
     public function query($request, $params=[]){
-        foreach($params as $key => $value){
-            $request = str_replace('@' . $key, $value, $request);
-        }
+        $query = $this->pdo->prepare($request);
+        $this->bindParams($request, $query, $params);
+        $query->execute();
+        return $query->fetchAll(\PDO::FETCH_ASSOC);
+    }
 
-        return $this->pdo->query($request)->fetchAll(\PDO::FETCH_ASSOC);
+    private function bindParams($request, $query, $params){
+        foreach($params as $key => $value){
+            if(strpos($request, ":$key") !== false){
+                $query->bindValue(":$key", $value);
+            }
+        }
     }
 }
 
