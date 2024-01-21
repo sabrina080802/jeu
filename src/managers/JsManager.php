@@ -2,7 +2,7 @@
 
 class JsManager{
     public static function getFramework(){
-        return file_get_contents(SRC_PATH . 'js/magy.js');
+        return self::includeFiles(SRC_PATH . 'js/');
     }
     private static function includeFiles($path){
         $result = '';
