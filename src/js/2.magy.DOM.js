@@ -88,12 +88,12 @@ class MagyDOMComponent extends MagyReflectionHelper {
         this.container = app.DOM.toHtml(this.render());
 
         this.getMethods().forEach((method) => {
-            if (method.name == "update") {
-                this.#updateMethod = method;
+            if (method == "update") {
+                this.#updateMethod = this.__proto__[method];
                 return;
             }
 
-            let lowerName = method.name.toLowerCase();
+            let lowerName = method.toLowerCase();
             if (!lowerName.startsWith("on"))
                 return;
 
@@ -106,7 +106,7 @@ class MagyDOMComponent extends MagyReflectionHelper {
                     this.attachHTMLEvent(
                         lowerName,
                         this.container.qualifiedChilds[elementName],
-                        method
+                        this.__proto__[method]
                     );
                 }
             }
@@ -121,10 +121,10 @@ class MagyDOMComponent extends MagyReflectionHelper {
      */
     attachHTMLEvent(eventName, target, method) {
         target.addEventListener(eventName, (event) => {
-            method(event);
+            method.apply(this, event);
 
             if (this.#updateMethod != null) {
-                this.#updateMethod();
+                this.#updateMethod.apply(this);
             }
         });
     }

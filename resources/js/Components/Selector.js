@@ -9,10 +9,10 @@ class Selector extends MagyDOMComponent {
         this.container.valueContainer.innerHTML = this.#values[0];
     }
     onBtnNextClick() {
-        if (valueIndex < values.length - 1) valueIndex++;
+        if (this.#valueIndex < this.#values.length - 1) this.#valueIndex++;
     }
     onBtnPreviousClick() {
-        if (valueIndex > 0) valueIndex--;
+        if (this.#valueIndex > 0) this.#valueIndex--;
     }
 
     update() {

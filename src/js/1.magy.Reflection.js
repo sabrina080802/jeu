@@ -7,13 +7,14 @@ class MagyReflectionHelper {
      */
     getMethods() {
         let methods = [];
-        let currentPrototype = this.prototype;
+        let currentPrototype = this.__proto__;
         while (currentPrototype) {
             methods = methods.concat(Object.getOwnPropertyNames(currentPrototype));
             currentPrototype = Object.getPrototypeOf(currentPrototype);
         }
+
         return methods.filter(
-            (method) => typeof this.prototype[method] === "function"
+            (method) => typeof this.__proto__[method] === "function"
         );
     }
 }
