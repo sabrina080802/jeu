@@ -9,13 +9,13 @@ class MagyDOMBuilder {
     toHtml(domStructure) {
         const childs = [];
         if (domStructure instanceof Array) {
-            domStructure.forEach((data) => {
-                if (data instanceof DOMElement) {
-                    childs.push(this.createElement(data.tagName, data.className, data.text, [], data.name));
+            domStructure.forEach((element) => {
+                if (element instanceof DOMElement) {
+                    childs.push(this.toHtml(element));
                 }
-                else if (data instanceof MagyDOMComponent) {
-                    if (data.render) {
-                        const builtElement = this.toHtml(data.render());
+                else if (element instanceof MagyDOMComponent) {
+                    if (element.render) {
+                        const builtElement = this.toHtml(element.render());
                         if (builtElement instanceof Array) {
                             childs.push(...builtElement);
                         }
@@ -30,7 +30,8 @@ class MagyDOMBuilder {
                 domStructure.className,
                 domStructure.text,
                 this.toHtml(domStructure.childs),
-                domStructure.name
+                domStructure.name,
+                domStructure.attributes
             );
         }
         else if (domStructure instanceof HTMLElement)
@@ -52,15 +53,24 @@ class MagyDOMBuilder {
         className = "",
         text = "",
         childs = [],
-        qualifiedName = null
+        qualifiedName = null,
+        attributes = {}
     ) {
         const element = document.createElement(tagName);
         if (className && className.length > 0) {
             element.className = className;
         }
+        if (attributes) {
+            for (const key in attributes) {
+                element.setAttribute(key, attributes[key]);
+            }
+        }
         element.innerHTML = text;
         element.qualifiedChilds = [];
         childs.forEach((x) => {
+            if (x instanceof DOMElement) {
+                x = this.createElement(x.tagName, x.className, x.text, x.childs, x.name);
+            }
             if (x.qualifiedName) {
                 element[x.qualifiedName] = x;
                 element.qualifiedChilds[x.qualifiedName] = x;
@@ -98,21 +108,28 @@ class MagyDOMComponent extends MagyReflectionHelper {
                 return;
 
             lowerName = lowerName.substr(2);
-            for (let elementName in this.container.qualifiedChilds) {
-                const elementLowerName = elementName.toLowerCase();
-                if (lowerName.startsWith(elementLowerName)) {
-                    lowerName = lowerName.substr(elementName.length);
-
-                    this.attachHTMLEvent(
-                        lowerName,
-                        this.container.qualifiedChilds[elementName],
-                        this.__proto__[method]
-                    );
-                }
+            const child = this.#getQualifiedChild(lowerName, this.container.qualifiedChilds);
+            if (child) {
+                this.attachHTMLEvent(lowerName.substr(child.qualifiedName.length), child, this.__proto__[method]);
             }
         });
     }
-
+    #getQualifiedChild(name, childs) {
+        for (let elementName in childs) {
+            const element = childs[elementName];
+            if (element.qualifiedChilds) {
+                const qualifiedChild = this.#getQualifiedChild(name, element.qualifiedChilds);
+                if (qualifiedChild) {
+                    return qualifiedChild;
+                }
+            }
+            const elementLowerName = elementName.toLowerCase();
+            if (name.startsWith(elementLowerName)) {
+                return element;
+            }
+        }
+        return null;
+    }
     /**
      * Listen an HTML event on a target. After the execution of the given method, it calls this this.update() method if it's available
      * @param {String} eventName the name of the event (can be click, mousemove, etc)
@@ -134,12 +151,171 @@ class MagyDOMComponent extends MagyReflectionHelper {
  * Default DOMElement
  */
 class DOMElement extends MagyDOMComponent {
-    constructor(tagName, className = "", text = "", name = "", childs = []) {
+    constructor(tagName, className = "", text = "", name = "", childs = [], attributes = {}) {
         super();
         this.tagName = tagName;
         this.className = className;
         this.text = text;
         this.name = name;
         this.childs = childs;
+        this.attributes = attributes;
+    }
+}
+
+/**
+ * Creates an <img> element
+ * @returns {HTMLImageElement}
+ */
+class Img extends DOMElement {
+    constructor(src, className = "", name = "") {
+        super('img', className, '', name, [], { src });
+    }
+}
+
+/**
+ * Creates a <button> element
+ * @returns {Button}
+ */
+class Button extends DOMElement {
+    /**
+     * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
+     */
+    constructor(name = "", className = "", content = null) {
+        super('button', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+    }
+}
+
+/**
+ * Creates a <div> element
+ * @returns {HTMLDivElement}
+ */
+class Div extends DOMElement {
+    /**
+     * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
+     */
+    constructor(className = "", name = "", content = null) {
+        super('div', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+    }
+}
+
+/**
+ * Creates a <header> element
+ */
+class Header extends DOMElement {
+    /**
+     * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
+     */
+    constructor(content = null, className = "", name = "") {
+        super('header', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+    }
+}
+
+/**
+ * Creates a <nav> element
+ */
+class Nav extends DOMElement {
+    /**
+     * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
+     */
+    constructor(className = "", name = "", content = null) {
+        super('div', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+    }
+}
+
+/**
+ * Creates a <h1> element
+ */
+class H1 extends DOMElement {
+    /**
+     * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
+     */
+    constructor(className = "", name = "", content = null) {
+        super('h1', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+    }
+}
+
+/**
+ * Creates a <h2> element
+ */
+
+class H2 extends DOMElement {
+    /**
+     * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
+     */
+    constructor(className = "", name = "", content = null) {
+        super('h2', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+    }
+}
+
+/**
+ * Creates a <h3> element
+ */
+class H3 extends DOMElement {
+    /**
+     * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
+     */
+    constructor(className = "", name = "", content = null) {
+        super('h3', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+    }
+}
+
+/**
+ * Creates a <h4> element
+ */
+class H4 extends DOMElement {
+    /**
+     * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
+     */
+    constructor(className = "", name = "", content = null) {
+        super('h4', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+    }
+}
+
+/**
+ * Creates a <h5> element
+ */
+class H5 extends DOMElement {
+    /**
+     * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
+     */
+    constructor(className = "", name = "", content = null) {
+        super('h5', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+    }
+}
+
+
+/**
+ * Creates a <h6> element
+ */
+class H6 extends DOMElement {
+    /**
+     * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
+     */
+    constructor(className = "", name = "", content = null) {
+        super('h6', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+    }
+}
+
+/**
+ * Creates a <p> element
+ */
+class P extends DOMElement {
+    /**
+     * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
+     */
+    constructor(className = "", name = "", content = null) {
+        super('p', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+    }
+}
+
+
+/**
+ * Creates an <input> element
+ */
+class Input extends DOMElement {
+    constructor(name = "", className = "", type = "text", placeholder = '', required = false, minLength = null, maxLength = null) {
+        super('input', className, '', name, [], {
+            placeholder, required, minLength, maxLength
+        });
     }
 }

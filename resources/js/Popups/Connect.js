@@ -1,4 +1,4 @@
-app.run(() => {
+/*app.run(() => {
     const popup = document.getElementById("connect");
     const email = popup.querySelector("[name='email']");
     const pwd = popup.querySelector('[name="password"]');
@@ -28,4 +28,36 @@ app.run(() => {
     function onClosePopup() {
         togglePopup("connect");
     }
-});
+});*/
+
+class Connect extends Popup {
+    constructor() {
+        super();
+    }
+    onBtnRegisterClick() {
+
+    }
+    onBtnConnectClick() {
+
+    }
+    onBtnForgetPasswordClick() {
+
+    }
+    renderPopupContent() {
+        return new Div('auth-popup', '', [
+            new H4('connexion', '', 'Connexion'),
+            new P('', '', 'Adresse email :'),
+            new Input('email', '', 'email', 'abc@example.fr', true, 4, 255),
+            new P('', 'password', 'Mot de passe :'),
+            new Input('password', '', 'password', '0123456', true),
+
+            new Button('btnForgetPassword', 'mdp', 'Mot de passe oublié ?'),
+            new Div('register-menu', 'registerMenu', [
+                new Button('btnRegister', 'inscri', 'Pas membre ?'),
+                new Button('btnConnect', 'co', 'Se connecter')
+            ]),
+            new Button('btnClose', 'closeBtn', 'x'),
+            new SocialNetworksConnection()
+        ]);
+    }
+}

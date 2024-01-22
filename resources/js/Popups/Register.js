@@ -1,4 +1,4 @@
-app.run(() => {
+/*app.run(() => {
   const popup = document.getElementById("register");
   const btnClose = popup.querySelector(".closeBtn");
   const btnRegister = popup.querySelector('[name="btn-register"]');
@@ -25,3 +25,4 @@ app.run(() => {
     togglePopup("register");
   }
 });
+*/
