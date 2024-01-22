@@ -1,38 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="home.css" rel="stylesheet" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap"
-      rel="stylesheet"
-    />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap"
-      rel="stylesheet"
-    />
-    <script src="**.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
+    <script src="_.js"></script>
 
     <title>Document</title>
-  </head>
+</head>
 
-  <body>
+<body>
     {{header}}
 
     <div id="create_match" class="popup">
-      <div class="popup-content match">
-        <div class="head">
-          <img class="img" src="logo_small.png" />
-          <h2 class="title">Créer votre Match</h2>
+        <div class="popup-content match">
+            <div class="head">
+                <img class="img" src="logo_small.png" />
+                <h2 class="title">Créer votre Match</h2>
+            </div>
+            <button class="closeBtn" onclick="togglePopup('create_match')">
+                X
+            </button>
+            <div class="choix" id="choices"></div>
         </div>
-        <button class="closeBtn" onclick="togglePopup('create_match')">
-          X
-        </button>
-        <div class="choix" id="choices"></div>
-      </div>
     </div>
-  </body>
+</body>
+
 </html>

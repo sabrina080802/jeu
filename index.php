@@ -13,7 +13,7 @@ $page = str_replace(ROOT_PATH, '', $_GET['page']);
 $ext = explode('.', $page);
 if(sizeof($ext) == 1) {
     //page can be empty
-    if($page == ''){
+    if($page == '' || $page == '/'){
         //afficher home
         $pageContent = $route->getPageContent('home');
     }

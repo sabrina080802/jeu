@@ -20,7 +20,7 @@ class JsManager{
         return $result;
     }
     public static function readFile($name){
-        if($name == '**.js'){
+        if($name == '**.js' || $name == '_.js'){
             $result = self::includeFiles(JS_PATH);
             echo $result;
             exit;
