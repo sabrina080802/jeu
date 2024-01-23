@@ -1,19 +1,16 @@
 <?php namespace Magy\Managers;
 
-class JsManager{
-    public static function getFramework(){
-        return self::includeFiles(SRC_PATH . 'js/');
-    }
+class StylesManager{
     private static function includeFiles($path){
         $result = '';
         $fileList = scandir($path);
         $count = sizeof($fileList);
         for($i = 2;$i < $count;$i++){
             if(is_dir($path . $fileList[$i])){
-                $result .= self::includeFiles($path. $fileList[$i] . '/' );
+                $result .= self::includeFiles($path . '/' . $fileList[$i]);
             }
             else{
-                $result .= file_get_contents($path . $fileList[$i]) . ';;' . PHP_EOL;
+                $result .= file_get_contents($path . '/' . $fileList[$i]) . PHP_EOL;
             }
         }
 
@@ -23,14 +20,13 @@ class JsManager{
         if($name[0] == '/'){
             $name = substr($name, 1);
         }
-        if($name == '**.js' || $name == '_.js'){
-            return self::includeFiles(JS_PATH);
+        if($name == '**.css' || $name == '_.css'){
+            return self::includeFiles(CSS_PATH);
         }
         else{
-            return file_get_contents(JS_PATH . $name);
+            return file_get_contents(CSS_PATH . $name);
         }
     }
 }
-
 
 ?>

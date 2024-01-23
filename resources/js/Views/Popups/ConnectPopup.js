@@ -30,12 +30,13 @@
     }
 });*/
 
-class Connect extends Popup {
+class ConnectPopup extends Popup {
     constructor() {
         super();
     }
     onBtnRegisterClick() {
-
+        const regPopup = new RegisterPopup();
+        this.hide().then(regPopup.show);
     }
     onBtnConnectClick() {
 

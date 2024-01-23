@@ -2,8 +2,11 @@ class PageHeader extends MagyDOMComponent {
     constructor() { super(); }
 
     onBtnOpenAuthClick() {
-        const popup = new Connect();
+        const popup = new ConnectPopup();
         popup.show();
+    }
+    onBtnCreateMatchClick() {
+        console.log('click');
     }
     render() {
         return new Header([

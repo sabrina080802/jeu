@@ -6,6 +6,7 @@ include SRC_PATH . "Autoloader.php";
 use Magy\Managers\RoutesManager;
 use Magy\Managers\TemplatesManager;
 use Magy\Managers\JsManager;
+use Magy\Managers\StylesManager;
 
 $route = new RoutesManager();
 
@@ -47,13 +48,13 @@ else{
     $path = '';
     switch($ext){
         case 'css':
-            $path = CSS_PATH . $page;
             header('content-type: text/css');
-            break;
+            echo StylesManager::readFile($page);
+            return;
 
         case 'js':
-            JsManager::readFile($page);
             header('content-type: text/javascript');
+            echo JsManager::readFile($page);
             return;
 
         case 'png':

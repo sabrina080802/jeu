@@ -116,7 +116,6 @@ header .match img {
   align-items: center;
   width: 60em;
   max-width: 600px;
-  height: 30em;
   border-radius: 1.5em;
   overflow: hidden;
   background-color: rgb(36, 38, 49);
@@ -318,7 +317,7 @@ input {
   color: #fcd21c;
 }
 
-#create_match .head {
+.create-match .head {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -327,18 +326,18 @@ input {
   margin-left: -2em;
   margin-right: -1em;
 }
-#create_match .head h2 {
+.create-match .head h2 {
   border-bottom: none;
   margin-top: 0.5em;
   margin-right: 1.75em;
 }
-#create_match .head .img {
+.create-match .head > img {
   width: 8em;
 }
-#create_match .match {
+.create-match .match {
   background-color: rgb(32, 32, 32);
 }
-#create_match .match::after {
+.create-match .match::after {
   content: "";
   position: absolute;
   bottom: 0;

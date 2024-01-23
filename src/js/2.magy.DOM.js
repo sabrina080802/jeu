@@ -19,7 +19,9 @@ class MagyDOMBuilder {
                         if (builtElement instanceof Array) {
                             childs.push(...builtElement);
                         }
-                        else childs.push(builtElement);
+                        else {
+                            childs.push(builtElement);
+                        }
                     }
                 }
                 else throw new Exception("A component must be an instance of MagyDOMComponent");
@@ -75,11 +77,26 @@ class MagyDOMBuilder {
                 element[x.qualifiedName] = x;
                 element.qualifiedChilds[x.qualifiedName] = x;
             }
+            else {
+                this.exploreChildsOf(x, element);
+            }
             element.appendChild(x);
         });
         element.qualifiedName = qualifiedName;
 
         return element;
+    }
+    exploreChildsOf(target, parent) {
+        for (let i = 0; i < target.childNodes.length; i++) {
+            const key = target.childNodes[i].qualifiedName;
+            if (key) {
+                parent.qualifiedChilds[key] = target.childNodes[i];
+                parent[key] = target.childNodes[i];
+            }
+            else if (target.nodeType == 1) {
+                this.exploreChildsOf(target.childNodes[i], parent);
+            }
+        }
     }
 }
 
