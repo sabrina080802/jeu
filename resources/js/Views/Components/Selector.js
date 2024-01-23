@@ -1,12 +1,24 @@
 class Selector extends MagyDOMComponent {
+    qualifiedName;
     #values;
     #valueIndex = 0;
 
-    constructor(values) {
+    constructor(name, values = []) {
         super();
 
+        this.createEvent('changed');
+
+        setTimeout(() => {
+            console.log('Dispatching');
+            this.dispatchEvent('changed', 'xbox');
+        }, 500);
+
+
+        this.qualifiedName = name;
         this.#values = values;
-        this.container.valueContainer.innerHTML = this.#values[0];
+        if (this.#values.length > 0) {
+            this.container.valueContainer.innerHTML = this.#values[0];
+        }
     }
     onBtnNextClick() {
         if (this.#valueIndex < this.#values.length - 1) this.#valueIndex++;
@@ -14,7 +26,6 @@ class Selector extends MagyDOMComponent {
     onBtnPreviousClick() {
         if (this.#valueIndex > 0) this.#valueIndex--;
     }
-
     update() {
         this.container.valueContainer.innerHTML = this.#values[this.#valueIndex];
 
@@ -28,11 +39,11 @@ class Selector extends MagyDOMComponent {
     }
 
     render() {
-        return new DOMElement("div", "user-select", "", "",
+        return new Div("user-select", this.qualifiedName,
             [
-                new DOMElement("button", "", "&lt;", "btnPrevious"),
-                new DOMElement("div", "", "", "valueContainer"),
-                new DOMElement("button", "", "&gt;", "btnNext")
+                new Button('btnPrevious', '', "&lt;"),
+                new Div("valueContainer"),
+                new Button('btnNext', '', "&gt;")
             ]);
     }
 }

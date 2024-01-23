@@ -1,8 +1,33 @@
 /**
  * An event manager assignable to an object
  */
-class EventHandler {
+class EventHandler extends MagyReflectionHelper {
     #storedEvents = [];
+    #autoLinkEvents = [];
+
+    /**
+     * Check if the given event if an auto linked event
+     * @param {String} eventName the name of the event
+     * @returns {Boolean}
+     */
+    hasAutoLinkEvent(eventName) {
+        eventName = eventName.toLowerCase();
+        for (let i = 0; i < this.#autoLinkEvents.length; i++) {
+            if (this.#autoLinkEvents[i] == eventName) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Declare an event. Declaring an event enables auto linking on functions
+     * For example : onMyPopupClosed is autolinked to "closed" event
+     * @param {String} eventName the name of the event
+     */
+    createEvent(eventName) {
+        this.#autoLinkEvents.push(eventName.toLowerCase());
+    }
 
     /**
      * Link a callable to an event name to be called when dispatchEvent(eventName) is called
@@ -11,10 +36,11 @@ class EventHandler {
      * @param {Boolean} once Specify true if you wan't to remove your listener when the event is dispatched
      */
     addListener(eventName, action, once = false) {
+        eventName = eventName.toLocaleLowerCase();
         if (!this.#storedEvents[eventName]) {
             this.#storedEvents[eventName] = [];
         }
-        this.#storedEvents[eventName].push({ action, options });
+        this.#storedEvents[eventName].push({ action, options: { once } });
     }
 
     /**
@@ -23,6 +49,7 @@ class EventHandler {
      * @param {Function} action The linked callable
      */
     removeListener(eventName, action) {
+        eventName = eventName.toLocaleLowerCase();
         if (!this.#storedEvents[eventName]) return;
         const eList = this.#storedEvents[eventName];
         for (let i = 0; i < eList.length; i++) {
@@ -40,13 +67,14 @@ class EventHandler {
      * @return {Array} Returns an array containing Promises for async callables
      */
     dispatchEvent(eventName, ...args) {
+        eventName = eventName.toLocaleLowerCase();
         if (!this.#storedEvents[eventName]) return;
 
         const awaiters = [];
         const eList = this.#storedEvents[eventName];
         for (let i = 0; i < eList.length; i++) {
-            if (!eList[i].callback) continue;
-            const value = eList[i].callback(...args);
+            if (!eList[i].action) continue;
+            const value = eList[i].action(...args);
             if (value instanceof Promise) {
                 awaiters.push(value);
             }

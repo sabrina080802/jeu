@@ -6,7 +6,8 @@ class PageHeader extends MagyDOMComponent {
         popup.show();
     }
     onBtnCreateMatchClick() {
-        console.log('click');
+        const popup = new CreateMatchPopup();
+        popup.show();
     }
     render() {
         return new Header([

@@ -20,6 +20,7 @@ class MagyDOMBuilder {
                             childs.push(...builtElement);
                         }
                         else {
+                            builtElement.rootComponent = element;
                             childs.push(builtElement);
                         }
                     }
@@ -33,7 +34,8 @@ class MagyDOMBuilder {
                 domStructure.text,
                 this.toHtml(domStructure.childs),
                 domStructure.name,
-                domStructure.attributes
+                domStructure.attributes,
+                domStructure
             );
         }
         else if (domStructure instanceof HTMLElement)
@@ -56,9 +58,12 @@ class MagyDOMBuilder {
         text = "",
         childs = [],
         qualifiedName = null,
-        attributes = {}
+        attributes = {},
+        component = null
     ) {
         const element = document.createElement(tagName);
+        element.component = component;
+        component.container = element;
         if (className && className.length > 0) {
             element.className = className;
         }
@@ -71,7 +76,7 @@ class MagyDOMBuilder {
         element.qualifiedChilds = [];
         childs.forEach((x) => {
             if (x instanceof DOMElement) {
-                x = this.createElement(x.tagName, x.className, x.text, x.childs, x.name);
+                x = this.createElement(x.tagName, x.className, x.text, x.childs, x.name, x);
             }
             if (x.qualifiedName) {
                 element[x.qualifiedName] = x;
@@ -103,17 +108,44 @@ class MagyDOMBuilder {
 /**
  * Represents a DOM Component
  */
-class MagyDOMComponent extends MagyReflectionHelper {
+class MagyDOMComponent extends EventHandler {
     container;
     #updateMethod;
 
-    constructor() {
+    constructor(linkChilds = true) {
         super();
         if (!this.render) {
             return;
         }
         this.container = app.DOM.toHtml(this.render());
+        this.container.isRootComponent = true;
+        this.#attachChildsToRoot(this.container);
 
+        if (linkChilds) {
+            app.wait(0).then(() => this.#linkEvents());
+        }
+    }
+
+    /**
+     * Attach html childs to the root component
+     */
+    #attachChildsToRoot(parent) {
+        if (parent.rootComponent) {
+            return;
+        }
+        parent.rootComponent = this;
+
+        for (let i = 0; i < parent.childNodes.length; i++) {
+            if (parent.childNodes[i].nodeType == 1) {
+                this.#attachChildsToRoot(parent.childNodes[i]);
+            }
+        }
+    }
+
+    /**
+     * Link event to functions automatically
+     */
+    #linkEvents() {
         this.getMethods().forEach((method) => {
             if (method == "update") {
                 this.#updateMethod = this.__proto__[method];
@@ -127,10 +159,22 @@ class MagyDOMComponent extends MagyReflectionHelper {
             lowerName = lowerName.substr(2);
             const child = this.#getQualifiedChild(lowerName, this.container.qualifiedChilds);
             if (child) {
-                this.attachHTMLEvent(lowerName.substr(child.qualifiedName.length), child, this.__proto__[method]);
+                lowerName = lowerName.substr(child.qualifiedName.length);
+                if (child.rootComponent.hasAutoLinkEvent(lowerName)) {
+                    this.attachEvent(lowerName, child.rootComponent, this.__proto__[method]);
+                }
+                else {
+                    this.attachHTMLEvent(lowerName, child, this.__proto__[method]);
+                }
             }
         });
     }
+
+    /**
+     * Retrieve a child by his qualified name in a collection of childs
+     * @param {String} name the qualified name of the child
+     * @param {Array} childs A collection of childs
+     */
     #getQualifiedChild(name, childs) {
         for (let elementName in childs) {
             const element = childs[elementName];
@@ -147,8 +191,19 @@ class MagyDOMComponent extends MagyReflectionHelper {
         }
         return null;
     }
+
     /**
-     * Listen an HTML event on a target. After the execution of the given method, it calls this this.update() method if it's available
+     * Listen an event on a target. After the execution of the given method, it calls his this.update() method if it's available
+     * @param {String} eventName the name of the event (can be click, mousemove, etc)
+     * @param {MagyDOMComponent} target The component attached to the event
+     * @param {Function} method the method executed when the event is dispatched
+     */
+    attachEvent(eventName, target, method) {
+        target.addListener(eventName, method);
+    }
+
+    /**
+     * Listen an HTML event on a target. After the execution of the given method, it calls his this.update() method if it's available
      * @param {String} eventName the name of the event (can be click, mousemove, etc)
      * @param {HTMLElement} target The HTML element attached to the event
      * @param {Function} method the method executed when the event is dispatched
@@ -168,8 +223,8 @@ class MagyDOMComponent extends MagyReflectionHelper {
  * Default DOMElement
  */
 class DOMElement extends MagyDOMComponent {
-    constructor(tagName, className = "", text = "", name = "", childs = [], attributes = {}) {
-        super();
+    constructor(tagName, className = "", text = "", name = "", childs = [], attributes = {}, linkChilds = true) {
+        super(linkChilds);
         this.tagName = tagName;
         this.className = className;
         this.text = text;
@@ -185,7 +240,7 @@ class DOMElement extends MagyDOMComponent {
  */
 class Img extends DOMElement {
     constructor(src, className = "", name = "") {
-        super('img', className, '', name, [], { src });
+        super('img', className, '', name, [], { src }, false);
     }
 }
 
@@ -198,7 +253,7 @@ class Button extends DOMElement {
      * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
      */
     constructor(name = "", className = "", content = null) {
-        super('button', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+        super('button', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : [], {}, false);
     }
 }
 
@@ -211,7 +266,7 @@ class Div extends DOMElement {
      * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
      */
     constructor(className = "", name = "", content = null) {
-        super('div', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+        super('div', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : [], {}, false);
     }
 }
 
@@ -223,7 +278,7 @@ class Header extends DOMElement {
      * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
      */
     constructor(content = null, className = "", name = "") {
-        super('header', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+        super('header', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : [], {}, false);
     }
 }
 
@@ -235,7 +290,7 @@ class Nav extends DOMElement {
      * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
      */
     constructor(className = "", name = "", content = null) {
-        super('div', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+        super('div', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : [], {}, false);
     }
 }
 
@@ -247,7 +302,7 @@ class H1 extends DOMElement {
      * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
      */
     constructor(className = "", name = "", content = null) {
-        super('h1', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+        super('h1', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : [], {}, false);
     }
 }
 
@@ -260,7 +315,7 @@ class H2 extends DOMElement {
      * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
      */
     constructor(className = "", name = "", content = null) {
-        super('h2', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+        super('h2', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : [], {}, false);
     }
 }
 
@@ -272,7 +327,7 @@ class H3 extends DOMElement {
      * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
      */
     constructor(className = "", name = "", content = null) {
-        super('h3', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+        super('h3', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : [], {}, false);
     }
 }
 
@@ -284,7 +339,7 @@ class H4 extends DOMElement {
      * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
      */
     constructor(className = "", name = "", content = null) {
-        super('h4', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+        super('h4', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : [], {}, false);
     }
 }
 
@@ -296,7 +351,7 @@ class H5 extends DOMElement {
      * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
      */
     constructor(className = "", name = "", content = null) {
-        super('h5', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+        super('h5', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : [], {}, false);
     }
 }
 
@@ -309,7 +364,7 @@ class H6 extends DOMElement {
      * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
      */
     constructor(className = "", name = "", content = null) {
-        super('h6', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+        super('h6', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : [], {}, false);
     }
 }
 
@@ -321,7 +376,7 @@ class P extends DOMElement {
      * @param {String|Array} content The specified content can be either null, a String containing innerHTML, a DOMElementCollection
      */
     constructor(className = "", name = "", content = null) {
-        super('p', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : []);
+        super('p', className, (!content || content instanceof Array) ? '' : content, name, content instanceof Array ? content : [], {}, false);
     }
 }
 
@@ -333,6 +388,6 @@ class Input extends DOMElement {
     constructor(name = "", className = "", type = "text", placeholder = '', required = false, minLength = null, maxLength = null) {
         super('input', className, '', name, [], {
             placeholder, required, minLength, maxLength
-        });
+        }, false);
     }
 }
