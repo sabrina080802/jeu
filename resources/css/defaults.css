@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  background-color: rgb(25, 27, 36);
+  min-height: 100vh;
+  font-size: 1vw;
+  color-scheme: dark;
+}
+* {
+  font-family: "Montserrat", sans-serif;
+  color: white;
+}
+button {
+  cursor: pointer;
+  outline: 0;
+  border: none;
+}
+h1, h2, h3, h4, h5, h6{
+    font-weight: normal;
+    font-family: 'Bebas Neue', sans-serif;
+    margin: 0;
+}

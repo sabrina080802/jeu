@@ -6,15 +6,19 @@ class MagyDOMBuilder {
      * @param {Array} domStructure An array containing all childs
      * @return builts childs
      */
-    toHtml(domStructure) {
+    toHtml(domStructure, parent = null) {
         const childs = [];
         if (domStructure instanceof Array) {
             domStructure.forEach((element) => {
                 if (element instanceof DOMElement) {
-                    childs.push(this.toHtml(element));
+                    element = this.toHtml(element);
+                    childs.push(element);
                 }
                 else if (element instanceof MagyDOMComponent) {
-                    if (element.render) {
+                    if (element.container) {
+                        childs.push(element.container);
+                    }
+                    else if (element.render) {
                         const builtElement = this.toHtml(element.render());
                         if (builtElement instanceof Array) {
                             childs.push(...builtElement);
@@ -32,7 +36,7 @@ class MagyDOMBuilder {
                 domStructure.tagName,
                 domStructure.className,
                 domStructure.text,
-                this.toHtml(domStructure.childs),
+                this.toHtml(domStructure.childs, domStructure),
                 domStructure.name,
                 domStructure.attributes,
                 domStructure
@@ -78,7 +82,7 @@ class MagyDOMBuilder {
             if (x instanceof DOMElement) {
                 x = this.createElement(x.tagName, x.className, x.text, x.childs, x.name, x);
             }
-            if (x.qualifiedName) {
+            if (x.qualifiedName && x.qualifiedName != '') {
                 element[x.qualifiedName] = x;
                 element.qualifiedChilds[x.qualifiedName] = x;
             }
@@ -91,6 +95,7 @@ class MagyDOMBuilder {
 
         return element;
     }
+
     exploreChildsOf(target, parent) {
         for (let i = 0; i < target.childNodes.length; i++) {
             const key = target.childNodes[i].qualifiedName;
@@ -117,6 +122,7 @@ class MagyDOMComponent extends EventHandler {
         if (!this.render) {
             return;
         }
+
         this.container = app.DOM.toHtml(this.render());
         this.container.isRootComponent = true;
         this.#attachChildsToRoot(this.container);

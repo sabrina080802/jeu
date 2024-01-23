@@ -5,14 +5,7 @@ class Selector extends MagyDOMComponent {
 
     constructor(name, values = []) {
         super();
-
         this.createEvent('changed');
-
-        setTimeout(() => {
-            console.log('Dispatching');
-            this.dispatchEvent('changed', 'xbox');
-        }, 500);
-
 
         this.qualifiedName = name;
         this.#values = values;
@@ -21,13 +14,23 @@ class Selector extends MagyDOMComponent {
         }
     }
     onBtnNextClick() {
-        if (this.#valueIndex < this.#values.length - 1) this.#valueIndex++;
+        if (this.#valueIndex < this.#values.length - 1) {
+            this.#valueIndex++;
+            this.dispatchEvent('changed', this.#values[this.#valueIndex]);
+        }
     }
     onBtnPreviousClick() {
-        if (this.#valueIndex > 0) this.#valueIndex--;
+        if (this.#valueIndex > 0) {
+            this.#valueIndex--;
+            this.dispatchEvent('changed', this.#values[this.#valueIndex]);
+        }
     }
-    update() {
+    async update() {
+        this.container.valueContainer.style.filter = 'blur(7px)';
+        await app.wait(150);
         this.container.valueContainer.innerHTML = this.#values[this.#valueIndex];
+        await app.wait(0);
+        this.container.valueContainer.style.filter = null;
 
         if (this.#valueIndex == 0) {
             this.container.btnPrevious.setAttribute("disabled", "");
@@ -42,7 +45,7 @@ class Selector extends MagyDOMComponent {
         return new Div("user-select", this.qualifiedName,
             [
                 new Button('btnPrevious', '', "&lt;"),
-                new Div("valueContainer"),
+                new Div('', "valueContainer"),
                 new Button('btnNext', '', "&gt;")
             ]);
     }
