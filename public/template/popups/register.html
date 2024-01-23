@@ -1,32 +1,26 @@
 <div id="register" class="popup">
-  <div class="popup-content">
-    <div class="auth-popup">
-      <h4 class="connexion">Inscription</h4>
-      <p>Pseudo :</p>
-      <input name="pseudo" type="text" required minlength="4" />
-      <p>Adresse mail :</p>
-      <input
-        name="email"
-        type="email"
-        placeholder="abc@example.fr"
-        required
-        minlength="4"
-        maxlength="8"
-      />
-      <p>Mot de passe :</p>
-      <input name="pass" type="password" placeholder="••••••" />
-      <button class="mdp">Mot de passe oubliée ?</button>
-      <div class="register-menu">
-        <button name="btn-register" class="co">C'est parti !</button>
-      </div>
-      <button class="closeBtn" onclick="togglePopup('connect')">X</button>
-      <div class="social-networks">
-        <button><img src="PlayStation.png" name="playstation" /></button>
-        <button><img src="Xbox.png" name="xbox" /></button>
-        <button><img src="EpicGames.png" name="epic games" /></button>
-        <button><img src="Facebook.png" name="facebook" /></button>
-        <button><img src="google.png" name="google" /></button>
-      </div>
+    <div class="popup-content">
+        <div class="auth-popup">
+            <h4 class="connexion">Inscription</h4>
+            <p>Pseudo :</p>
+            <input name="pseudo" type="text" required minlength="4" />
+            <p>Adresse mail :</p>
+            <input name="email" type="email" placeholder="abc@example.fr" required minlength="4" maxlength="8" />
+            <p>Mot de passe :</p>
+            <!-- date de naissance -->
+            <input name="pass" type="password" placeholder="••••••" />
+            <button class="mdp">Mot de passe oubliée ?</button>
+            <div class="register-menu">
+                <button name="btn-register" class="co">C'est parti !</button>
+            </div>
+            <button class="closeBtn" onclick="togglePopup('connect')">X</button>
+            <div class="social-networks">
+                <button><img src="PlayStation.png" name="playstation" /></button>
+                <button><img src="Xbox.png" name="xbox" /></button>
+                <button><img src="EpicGames.png" name="epic games" /></button>
+                <button><img src="Facebook.png" name="facebook" /></button>
+                <button><img src="google.png" name="google" /></button>
+            </div>
+        </div>
     </div>
-  </div>
 </div>

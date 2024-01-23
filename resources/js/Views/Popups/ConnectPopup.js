@@ -33,6 +33,9 @@
 class ConnectPopup extends Popup {
     constructor() {
         super();
+
+        const myInput = document.getElementById('my-password');
+        this.container.btnRegister
     }
     onBtnRegisterClick() {
         const regPopup = new RegisterPopup();
@@ -49,11 +52,11 @@ class ConnectPopup extends Popup {
             new H4('connexion', '', 'Connexion'),
             new P('', '', 'Adresse email :'),
             new Input('email', '', 'email', 'abc@example.fr', true, 4, 255),
-            new P('', 'password', 'Mot de passe :'),
+            new P('', '', 'Mot de passe :'),
             new Input('password', '', 'password', '0123456', true),
 
             new Button('btnForgetPassword', 'mdp', 'Mot de passe oublié ?'),
-            new Div('register-menu', 'registerMenu', [
+            new Div('register-menu', '', [
                 new Button('btnRegister', 'inscri', 'Pas membre ?'),
                 new Button('btnConnect', 'co', 'Se connecter')
             ]),
