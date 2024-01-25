@@ -7,10 +7,10 @@ function autoload($file){
     $path = '';
     switch($components[0]){
         case 'Magy':
-            $path = MAGY_PATH;
+            $path = MAGY_PATH . 'php/';
             break;
         case 'App':
-            $path = SRV_PATH;
+            $path = PRIVATE_APP_PATH;
             break;
         default:
             throw new \Exception("File doesn't exists for namespace \"" . $file . "\"");
@@ -21,7 +21,8 @@ function autoload($file){
         $path .= strtolower($components[$i]) . '/';
     }
     $path .= $components[$componentsCount - 1];
-    require_once $path . '.php';}
+    require_once $path . '.php';
+}
 
 spl_autoload_register("autoload");
 

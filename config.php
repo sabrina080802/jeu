@@ -2,13 +2,13 @@
 
 /** Magy paths */
 const MAGY_PATH = __DIR__ . '/magy/';
-const SRV_PATH = __DIR__ . '/private/';
 const CONFIG_PATH = __DIR__ . '/config/';
 
 /** Applications paths */
 const ROOT_PATH = '/dossier/';
 
 //Php
+const PRIVATE_APP_PATH = __DIR__ . '/private/';
 const API_PATH = __DIR__ . '/private/api/';
 const CONTROLLERS_PATH = __DIR__ . '/private/controllers/';
 
