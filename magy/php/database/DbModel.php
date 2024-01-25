@@ -7,7 +7,7 @@ class {{TableName}}{
         {{PropsFillObj}}
     }
     public static function create({{PropertiesCtor}}){
-        $entity = new {{TableName}}(PropsFillCtor);
+        $entity = new {{TableName}}({{PropsFillCtor}});
         $db = DbManager::getDatabase('{{DbName}}');
         //$id = $db->insert("INSERT INTO {{TableName}} ({{ProtectedPropsFillObj}}) VALUES({{QueryPropsFillCtor}})");
     }

@@ -49,8 +49,10 @@ class Database{
         ];
 
         for($dictionaryVars as $key => $value){
-            //$phpEntityModel = preg_replace('')
+            $phpEntityModel = preg_replace('/\{\{' . $key . '}\}/', $value, $phpEntityModel);
         }
+
+        file_put_contents(PRIVATE_APP_PATH . 'entities/' . $tableInfos['TABLE_NAME'] . '.php', $phpEntityModel);
     }
 }
 
