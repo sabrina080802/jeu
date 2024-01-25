@@ -224,6 +224,7 @@ input {
 :root {
     --sec-main-color: rgb(255, 139, 7);
     --main-color: rgb(30, 144, 255);
+    --dark-main-color: rgb(19, 118, 216);
 }
 
 .popup {
@@ -361,14 +362,15 @@ input {
     align-items: center;
     margin-bottom: 2em;
     margin-right: -1em;
-    height: 4em;
+    height: 3em;
     padding: 0 3em 0 0;
-    background-color: rgb(52, 54, 68);
+    background-color: var(--main-color);
     border-radius: .5em;
     box-shadow: 0 -5px 9px rgba(0, 0, 0, 0.5) inset, 5px 2px 12px 3px rgba(0, 0, 0, .05);
-    border: 1px solid var(--main-color);
     border-top: none;
     border-bottom-right-radius: 5em;
+    border: 1px solid rgba(255,255,255,.5);
+    border-top: none;
     font-style: italic;
 }
 
@@ -401,8 +403,11 @@ input {
     border-top-right-radius: 1em;
     border-bottom-left-radius: 3em;
     border-bottom-right-radius: 3em;
+    transition: background-color .25s ease-out;
 }
-
+.create-match .form > button:hover{
+    background-color: var(--dark-main-color);
+}
 .create-match .form::after {
     content: "";
     position: absolute;

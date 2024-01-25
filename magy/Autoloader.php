@@ -7,22 +7,14 @@ function autoload($file){
     $path = '';
     switch($components[0]){
         case 'Magy':
-            $path = SRC_PATH;
+            $path = MAGY_PATH;
             break;
         case 'App':
-            $path = APP_PATH;
+            $path = SRV_PATH;
             break;
         default:
             throw new \Exception("File doesn't exists for namespace \"" . $file . "\"");
     }
-
-    /*if($components[0] == "Magy"){
-        $path = SRC_PATH;
-    }
-    else if($components[0] == "App"){
-        $path = APP_PATH;
-    }
-    else throw new \Exception("File doesn't exists for namespace \"" . $file . "\"");*/
 
     $componentsCount = sizeof($components);
     for ($i = 1; $i < $componentsCount - 1; $i++) {

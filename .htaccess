@@ -1,3 +1,4 @@
 RewriteEngine on
 RewriteCond %{REQUEST_URI} !index.php
+RewriteCond %{REQUEST_URI} !magy/config.php
 RewriteRule	^.*$    index.php?page=%{REQUEST_URI}&%{QUERY_STRING} [L]

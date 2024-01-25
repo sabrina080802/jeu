@@ -1,20 +1,30 @@
 <?php
 
-const ROOT_PATH = '/dossier/';
-
-const SRC_PATH = __DIR__ . '/src/';
-const APP_PATH = __DIR__ . '/public/';
+/** Magy paths */
+const MAGY_PATH = __DIR__ . '/magy/';
+const SRV_PATH = __DIR__ . '/private/';
 const CONFIG_PATH = __DIR__ . '/config/';
 
-const VIEW_PATH = __DIR__ . '/public/views/';
-const API_PATH = __DIR__ . '/public/api/';
-const TEMPLATES_PATH = __DIR__ . '/public/template/';
-const CONTROLLERS_PATH = __DIR__ . '/public/controllers/';
+/** Applications paths */
+const ROOT_PATH = '/dossier/';
 
-const CSS_PATH = __DIR__ . '/resources/css/';
-const FILES_PATH = __DIR__ . '/resources/files/';
-const FONTS_PATH = __DIR__ . '/resources/fonts/';
-const IMAGES_PATH = __DIR__ . '/resources/images/';
-const JS_PATH = __DIR__ . '/resources/js/';
+//Php
+const API_PATH = __DIR__ . '/private/api/';
+const CONTROLLERS_PATH = __DIR__ . '/private/controllers/';
+
+//Views
+const VIEW_PATH = __DIR__ . '/public/views/';
+const TEMPLATES_PATH = __DIR__ . '/public/template/';
+
+//Styling
+const CSS_PATH = __DIR__ . '/public/css/';
+
+//JS
+const JS_PATH = __DIR__ . '/public/js/';
+
+//Files
+const FILES_PATH = __DIR__ . '/public/files/';
+const FONTS_PATH = __DIR__ . '/public/fonts/';
+const IMAGES_PATH = __DIR__ . '/public/images/';
 
 ?>

@@ -1,7 +1,7 @@
 <?php
 
 include "config.php";
-include SRC_PATH . "Autoloader.php";
+include MAGY_PATH . "Autoloader.php";
 
 use Magy\Managers\RoutesManager;
 use Magy\Managers\TemplatesManager;
@@ -12,6 +12,7 @@ $route = new RoutesManager();
 
 $page = str_replace(ROOT_PATH, '', $_GET['page']);
 $ext = explode('.', $page);
+
 if(sizeof($ext) == 1) {
     //page can be empty
     if($page == '' || $page == '/'){
