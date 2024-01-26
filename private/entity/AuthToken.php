@@ -1,22 +1,41 @@
-<?php App\Entity;
+<?php namespace App\Entity;
 
 class AuthToken{
+	public $account;
 	public $identifier;
 	public $token;
-	public $account;
 
-    public function __construct($identifier=null, $token=null, $account=null){
+    public function __construct($account=null, $identifier=null, $token=null){
+		$this->account = $account;
 		$this->identifier = $identifier;
 		$this->token = $token;
-		$this->account = $account;
     }
-    public static function create($identifier=null, $token=null, $account=null){
+
+    /**
+     * Delete the record in database using primary keys
+     */
+    public function delete(){
+        DbManager::getDatabase('crossplayarena')
+            ->execute('DELETE FROM auth_token WHERE ');
+    }
+
+    /**
+     * Update the record in database with entity data
+     */
+    public function flush(){
+
+    }
+
+    /**
+     *@return AuthToken A newly created auth_token with given data
+     */
+    public static function create($account=null, $identifier=null, $token=null){
         $entity = new AuthToken();
         $db = DbManager::getDatabase('crossplayarena');
-        $db->insert("INSERT INTO auth_token (identifier, token, account) VALUES(:identifier,:token,:account)", [
+        $db->insert("INSERT INTO auth_token (account, identifier, token) VALUES(:account,:identifier,:token)", [
+			"account" => $account,
 			"identifier" => $identifier,
-			"token" => $token,
-			"account" => $account
+			"token" => $token
         ]);
     }
 }

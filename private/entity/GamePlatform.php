@@ -1,4 +1,4 @@
-<?php App\Entity;
+<?php namespace App\Entity;
 
 class GamePlatform{
 	public $game;
@@ -8,6 +8,25 @@ class GamePlatform{
 		$this->game = $game;
 		$this->platform = $platform;
     }
+
+    /**
+     * Delete the record in database using primary keys
+     */
+    public function delete(){
+        DbManager::getDatabase('crossplayarena')
+            ->execute('DELETE FROM game_platform WHERE ');
+    }
+
+    /**
+     * Update the record in database with entity data
+     */
+    public function flush(){
+
+    }
+
+    /**
+     *@return GamePlatform A newly created game_platform with given data
+     */
     public static function create($game=null, $platform=null){
         $entity = new GamePlatform();
         $db = DbManager::getDatabase('crossplayarena');

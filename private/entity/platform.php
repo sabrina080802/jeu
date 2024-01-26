@@ -1,22 +1,41 @@
-<?php App\Entity;
+<?php namespace App\Entity;
 
 class Platform{
 	public $identifier;
-	public $name;
 	public $logo;
+	public $name;
 
-    public function __construct($identifier=null, $name=null, $logo=null){
+    public function __construct($identifier=null, $logo=null, $name=null){
 		$this->identifier = $identifier;
-		$this->name = $name;
 		$this->logo = $logo;
+		$this->name = $name;
     }
-    public static function create($identifier=null, $name=null, $logo=null){
+
+    /**
+     * Delete the record in database using primary keys
+     */
+    public function delete(){
+        DbManager::getDatabase('crossplayarena')
+            ->execute('DELETE FROM platform WHERE ');
+    }
+
+    /**
+     * Update the record in database with entity data
+     */
+    public function flush(){
+
+    }
+
+    /**
+     *@return Platform A newly created platform with given data
+     */
+    public static function create($identifier=null, $logo=null, $name=null){
         $entity = new Platform();
         $db = DbManager::getDatabase('crossplayarena');
-        $db->insert("INSERT INTO platform (identifier, name, logo) VALUES(:identifier,:name,:logo)", [
+        $db->insert("INSERT INTO platform (identifier, logo, name) VALUES(:identifier,:logo,:name)", [
 			"identifier" => $identifier,
-			"name" => $name,
-			"logo" => $logo
+			"logo" => $logo,
+			"name" => $name
         ]);
     }
 }

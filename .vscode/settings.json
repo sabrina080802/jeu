@@ -1,0 +1,22 @@
+{
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true,
+    "editor.tabSize": 4,
+    "editor.minimap.enabled": false,
+    "editor.autoIndent": "full",
+    "editor.autoClosingBrackets": "always",
+    "editor.autoClosingComments": "always",
+    "editor.autoClosingDelete": "always",
+    "editor.autoClosingOvertype": "always",
+    "editor.autoClosingQuotes": "always",
+    "intelephense.environment.documentRoot": "index.php",
+    "intelephense.environment.includePaths": [
+        "**/magy/**",
+        "**/private/**"
+    ],
+    "intelephense.files.exclude": [
+        "**/.git/**",
+        "**/.vscode/**",
+        "**/public/**"
+    ],
+}

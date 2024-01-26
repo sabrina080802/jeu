@@ -1,10 +1,15 @@
-<?php namespace App\Services;
+<?php
 
+namespace App\Services;
+
+use App\Entity\AuthToken;
 use Magy\Utils\StringsHelper;
 use Magy\Managers\DbManager;
 
-class AuthManager{
-    public static function createToken($account){
+class AuthManager
+{
+    public static function createToken($account)
+    {
         $token = StringsHelper::generateKey(25);
         return AuthToken::create(null, $token, $account['identifier']);
 
@@ -16,10 +21,7 @@ class AuthManager{
 
         return $token;*/
     }
-    public static function isAuth(){
-        
+    public static function isAuth()
+    {
     }
 }
-
-
-?>

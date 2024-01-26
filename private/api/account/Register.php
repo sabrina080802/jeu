@@ -2,11 +2,12 @@
 
 use Magy\Utils\REST;
 use Magy\Managers\DbManager;
+use App\Entity\Account;
 
 
 //Requête pour s'inscrite
 class Register extends REST{
-    private $account;
+    private Account $account;
     private $success;
     private $error;
 
@@ -33,7 +34,6 @@ class Register extends REST{
 
             $this->account = Account::create(null, $data->email, $data->pass, $data->pseudo);
             //$db->query('INSERT INTO account (email, pass, pseudo) VALUES(:email, :pass, :pseudo);', $data);
-
             // Récupérer les données du compte nouvellement inséré
             $this->account = $db->first('SELECT * FROM account WHERE email = :email AND pass = :pass', $data);
 

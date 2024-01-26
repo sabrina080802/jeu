@@ -1,28 +1,47 @@
-<?php App\Entity;
+<?php namespace App\Entity;
 
 class Account{
-	public $identifier;
+	public $creationDate;
 	public $email;
+	public $identifier;
 	public $pass;
 	public $pseudo;
-	public $creationDate;
 
-    public function __construct($identifier=null, $email=null, $pass=null, $pseudo=null, $creationDate=null){
-		$this->identifier = $identifier;
+    public function __construct($creationDate=null, $email=null, $identifier=null, $pass=null, $pseudo=null){
+		$this->creationDate = $creationDate;
 		$this->email = $email;
+		$this->identifier = $identifier;
 		$this->pass = $pass;
 		$this->pseudo = $pseudo;
-		$this->creationDate = $creationDate;
     }
-    public static function create($identifier=null, $email=null, $pass=null, $pseudo=null, $creationDate=null){
+
+    /**
+     * Delete the record in database using primary keys
+     */
+    public function delete(){
+        DbManager::getDatabase('crossplayarena')
+            ->execute('DELETE FROM account WHERE ');
+    }
+
+    /**
+     * Update the record in database with entity data
+     */
+    public function flush(){
+
+    }
+
+    /**
+     *@return Account A newly created account with given data
+     */
+    public static function create($creationDate=null, $email=null, $identifier=null, $pass=null, $pseudo=null){
         $entity = new Account();
         $db = DbManager::getDatabase('crossplayarena');
-        $db->insert("INSERT INTO account (identifier, email, pass, pseudo, creation_date) VALUES(:identifier,:email,:pass,:pseudo,:creationDate)", [
-			"identifier" => $identifier,
+        $db->insert("INSERT INTO account (creation_date, email, identifier, pass, pseudo) VALUES(:creationDate,:email,:identifier,:pass,:pseudo)", [
+			"creationDate" => $creationDate,
 			"email" => $email,
+			"identifier" => $identifier,
 			"pass" => $pass,
-			"pseudo" => $pseudo,
-			"creationDate" => $creationDate
+			"pseudo" => $pseudo
         ]);
     }
 }
