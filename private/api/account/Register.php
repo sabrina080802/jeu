@@ -11,7 +11,7 @@ class Register extends REST{
     private $error;
 
     private $message;
-    
+
     //Définir les paramètres de la requête
     public function getParams(){
         return [
@@ -24,24 +24,25 @@ class Register extends REST{
     //Corps de la requête
     public function process($data){
         $db = DbManager::getDatabase('crossplayarena');
-       // Vérifier si le compte existe déjà
-      $existingAccount = $db->first('SELECT * FROM account WHERE email = :email;', $data);
+        // Vérifier si le compte existe déjà
+        $existingAccount = $db->first('SELECT * FROM account WHERE email = :email;', $data);
 
-      if (!$existingAccount) {
+        if (!$existingAccount) {
             $data->pass = password_hash($data->pass, PASSWORD_BCRYPT);
-          // Le compte n'existe pas, procéder à l'insertion
-          $db->query('INSERT INTO account (email, pass, pseudo) VALUES(:email, :pass, :pseudo);', $data);
-  
-          // Récupérer les données du compte nouvellement inséré
-          $this->account = $db->first('SELECT * FROM account WHERE email = :email AND pass = :pass', $data);
+            // Le compte n'existe pas, procéder à l'insertion
 
-          $this->success = true;
-          //T'es plus sur preply xD
-    } else {
+            $this->account = Account::create(null, $data->email, $data->pass, $data->pseudo);
+            //$db->query('INSERT INTO account (email, pass, pseudo) VALUES(:email, :pass, :pseudo);', $data);
+
+            // Récupérer les données du compte nouvellement inséré
+            $this->account = $db->first('SELECT * FROM account WHERE email = :email AND pass = :pass', $data);
+
+            $this->success = true;
+        } else {
         // Le compte existe déjà, envoyer une réponse JSON indiquant l'échec
-        $this->success = false;
-        $this->error = "Le compte avec cet email existe déjà.";
-      }
+            $this->success = false;
+            $this->error = "Le compte avec cet email existe déjà.";
+        }
     }
 
     //Résultat de la requête

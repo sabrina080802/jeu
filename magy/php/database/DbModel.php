@@ -1,15 +1,14 @@
-<?php App\Entity\{{TableName}};
+<?php App\Entity;
 
-class {{TableName}}{
-    {{Properties}}
-
+class {{EntityName}}{
+{{Properties}}
     public function __construct({{PropertiesCtor}}){
-        {{PropsFillObj}}
-    }
+{{PropsFillObj}}    }
     public static function create({{PropertiesCtor}}){
-        $entity = new {{TableName}}({{PropsFillCtor}});
+        $entity = new {{EntityName}}({{PropsFillCtor}});
         $db = DbManager::getDatabase('{{DbName}}');
-        //$id = $db->insert("INSERT INTO {{TableName}} ({{ProtectedPropsFillObj}}) VALUES({{QueryPropsFillCtor}})");
+        $db->insert("INSERT INTO {{TableName}} ({{ProtectedPropsFillObj}}) VALUES({{QueryPropsFillCtor}})", [
+{{InsertReqFillObj}}        ]);
     }
 }
 

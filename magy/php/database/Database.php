@@ -1,6 +1,7 @@
 <?php namespace Magy\Database;
 
 use Magy\Utils\ArrayExtension;
+use Magy\Utils\StringsHelper;
 
 class Database{
     private $pdo;
@@ -32,27 +33,69 @@ class Database{
     }
     public function configure($schemaDb){
         $tables = $schemaDb->query('SELECT * FROM TABLES WHERE TABLE_SCHEMA = :name', ['name' => $this->name]);
-        $model = file_get_contents('DbModel.php');
+        $columns = $schemaDb->query('SELECT * FROM COLUMNS WHERE TABLE_SCHEMA = :name', ['name' => $this->name]);
+        $model = file_get_contents(__DIR__ . '/DbModel.php');
         for($i = 0;$i < $tables->count();$i++){
-            $this->createTable($tables[$i], $model);
+            $t = $tables[$i];
+            $tableColumns = new ArrayExtension();
+
+            for($j = 0;$j < $columns->count();$j++){
+                if($columns[$j]['TABLE_NAME'] == $t['TABLE_NAME']){
+                    $tableColumns->push($columns[$j]);
+                }
+            }
+
+            $this->createTable($t, $tableColumns, $model);
         }
     }
-    private function createTable($tableInfos, $phpEntityModel){
+    private function createTable($tableInfos, $columns, $phpEntityModel){
+        $entityName = StringsHelper::toCamelCase($tableInfos['TABLE_NAME']);
+
+        $props = '';
+        $propsFillObj = '';
+        $propsCtor = '';
+        $propsFillCtor = '';
+        $protectedPropsFillObj = '';
+        $queryPropsFillCtor = '';
+        $insertReqFillObj = '';
+        for($i = 0;$i < $columns->count();$i++){
+            $colName = StringsHelper::toCamelCase($columns[$i]['COLUMN_NAME']);
+            $colName = strtolower($colName[0]) . substr($colName, 1);
+            $props .= "\tpublic \$$colName;" . PHP_EOL;
+            $propsFillObj .= "\t\t\$this->$colName = \$$colName;" . PHP_EOL;
+            if($i > 0){
+                $propsCtor .= ', ';
+                $queryPropsFillCtor .= ',';
+                $protectedPropsFillObj .= ', ';
+            }
+            $propsCtor .= "\$$colName=null";
+            $queryPropsFillCtor .= ":$colName";
+            $protectedPropsFillObj .= $columns[$i]['COLUMN_NAME'];
+            $insertReqFillObj .= "\t\t\t\"$colName\" => \$$colName";
+            if($i < $columns->count() - 1){
+                $insertReqFillObj .= ',';
+            }
+            $insertReqFillObj .= PHP_EOL;
+        }
+
         $dictionaryVars = [
+            'EntityName' => $entityName,
             'TableName' => $tableInfos['TABLE_NAME'],
             'DbName' => $this->name,
-            'Properties' => '',
-            'PropsFillObj' => '',
-            'PropertiesCtor' => '',
-            'ProtectedPropsFillObj' => '',
-            'QueryPropsFillCtor' => ''
+            'Properties' => $props,
+            'PropsFillObj' => $propsFillObj,
+            'PropertiesCtor' => $propsCtor,
+            'PropsFillCtor' => $propsFillCtor,
+            'ProtectedPropsFillObj' => $protectedPropsFillObj,
+            'QueryPropsFillCtor' => $queryPropsFillCtor,
+            'InsertReqFillObj' => $insertReqFillObj
         ];
 
-        for($dictionaryVars as $key => $value){
+        foreach($dictionaryVars as $key => $value){
             $phpEntityModel = preg_replace('/\{\{' . $key . '}\}/', $value, $phpEntityModel);
         }
 
-        file_put_contents(PRIVATE_APP_PATH . 'entities/' . $tableInfos['TABLE_NAME'] . '.php', $phpEntityModel);
+        file_put_contents(PRIVATE_APP_PATH . 'entities/' . $entityName . '.php', $phpEntityModel);
     }
 }
 
