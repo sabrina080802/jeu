@@ -17,6 +17,9 @@
     "intelephense.files.exclude": [
         "**/.git/**",
         "**/.vscode/**",
-        "**/public/**"
+        "**/public/**",
+        "**/magy/php/database/models/**"
     ],
+    "php.validate.enable": false,
+    "php.suggest.basic": false,
 }

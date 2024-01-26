@@ -13,41 +13,37 @@ $route = new RoutesManager();
 $page = str_replace(ROOT_PATH, '', $_GET['page']);
 $ext = explode('.', $page);
 
-if(sizeof($ext) == 1) {
+if (sizeof($ext) == 1) {
     //page can be empty
-    if($page == '' || $page == '/'){
+    if ($page == '' || $page == '/') {
         //afficher home
         $pageContent = $route->getPageContent('home');
-    }
-    else{
+    } else {
         $apiRequest = $route->getAPIRequest($page);
-        if($apiRequest != null){
+        if ($apiRequest != null) {
             $req = new $apiRequest();
             $pageContent = $req->execute();
-            if($pageContent === false){
+            if ($pageContent === false) {
                 http_response_code(400);
                 return;
             }
-        }
-        else if($route->pageExists($page)) {
+        } else if ($route->pageExists($page)) {
             //afficher $page.html
             $pageContent = $route->getPageContent($page);
-        }
-        else{
+        } else {
             //show 404
             $pageContent = $route->getPageContent('404');
         }
     }
-    
+
     $templates = new TemplatesManager();
     $pageContent = $templates->translate($pageContent);
     $pageContent = str_replace('<head>', '<head><script>' . JsManager::getFramework() . '</script>', $pageContent);
     echo $pageContent;
-}
-else{
+} else {
     $ext = $ext[sizeof($ext) - 1];
     $path = '';
-    switch($ext){
+    switch ($ext) {
         case 'css':
             header('content-type: text/css');
             echo StylesManager::readFile($page);
@@ -74,12 +70,9 @@ else{
             break;
     }
 
-    if(file_exists($path)){
+    if (file_exists($path)) {
         echo file_get_contents($path);
-    }
-    else{
+    } else {
         http_response_code(404);
     }
 }
-
-?>

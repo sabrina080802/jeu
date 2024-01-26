@@ -1,4 +1,6 @@
-<?php namespace App\API\Account;
+<?php
+
+namespace App\API\Account;
 
 use Magy\Utils\REST;
 use Magy\Managers\DbManager;
@@ -6,7 +8,8 @@ use App\Entity\Account;
 
 
 //Requête pour s'inscrite
-class Register extends REST{
+class Register extends REST
+{
     private Account $account;
     private $success;
     private $error;
@@ -14,7 +17,8 @@ class Register extends REST{
     private $message;
 
     //Définir les paramètres de la requête
-    public function getParams(){
+    public function getParams()
+    {
         return [
             'pseudo' => REST::TEXT,
             'email' => REST::TEXT,
@@ -23,7 +27,8 @@ class Register extends REST{
     }
 
     //Corps de la requête
-    public function process($data){
+    public function process($data)
+    {
         $db = DbManager::getDatabase('crossplayarena');
         // Vérifier si le compte existe déjà
         $existingAccount = $db->first('SELECT * FROM account WHERE email = :email;', $data);
@@ -39,20 +44,18 @@ class Register extends REST{
 
             $this->success = true;
         } else {
-        // Le compte existe déjà, envoyer une réponse JSON indiquant l'échec
+            // Le compte existe déjà, envoyer une réponse JSON indiquant l'échec
             $this->success = false;
             $this->error = "Le compte avec cet email existe déjà.";
         }
     }
 
     //Résultat de la requête
-    public function getResponse(){
+    public function getResponse()
+    {
         return (object)[
             'success' => $this->success,
             'error' => $this->error
         ];
     }
 }
-
-
-?>

@@ -26,5 +26,3 @@ const JS_PATH = __DIR__ . '/public/js/';
 const FILES_PATH = __DIR__ . '/public/files/';
 const FONTS_PATH = __DIR__ . '/public/fonts/';
 const IMAGES_PATH = __DIR__ . '/public/images/';
-
-?>

@@ -1,11 +1,10 @@
 <?php
 
-function autoload($file){
-    //Magy\Managers\RoutesManager;
-    //["Magy", "Managers", "RoutesManager"]
+function autoload($file)
+{
     $components = explode('\\', $file);
     $path = '';
-    switch($components[0]){
+    switch ($components[0]) {
         case 'Magy':
             $path = MAGY_PATH . 'php/';
             break;
@@ -25,5 +24,3 @@ function autoload($file){
 }
 
 spl_autoload_register("autoload");
-
-?>

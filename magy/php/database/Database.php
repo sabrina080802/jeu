@@ -43,8 +43,8 @@ class Database
         $tables = $schemaDb->query('SELECT * FROM TABLES WHERE TABLE_SCHEMA = :name', ['name' => $this->name]);
         $columns = $schemaDb->query('SELECT * FROM COLUMNS WHERE TABLE_SCHEMA = :name', ['name' => $this->name]);
 
-        $model = file_get_contents(__DIR__ . '/DbModel.php');
-        $serviceModel = file_get_contents(__DIR__ . '/ServiceModel.php');
+        $model = file_get_contents(__DIR__ . '/models/DbModel.php');
+        $serviceModel = file_get_contents(__DIR__ . '/models/ServiceModel.php');
 
         for ($i = 0; $i < $tables->count(); $i++) {
             $t = $tables[$i];

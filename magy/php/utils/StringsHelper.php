@@ -1,6 +1,9 @@
-<?php namespace Magy\Utils;
+<?php
 
-class StringsHelper{
+namespace Magy\Utils;
+
+class StringsHelper
+{
     public static function generateKey($keySize)
     {
         $alphabet = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -11,24 +14,25 @@ class StringsHelper{
 
         return $result;
     }
-    public static function toCamelCase($name){
+    public static function toCamelCase($name)
+    {
         $name = trim($name);
         $len = strlen($name);
         $result = '';
         $capitalize = true;
-        for($i = 0;$i < $len;$i++){
-            if($name[$i] != '_' && $name[$i] != ' ' && $name[$i] != '-'){
+        for ($i = 0; $i < $len; $i++) {
+            if ($name[$i] != '_' && $name[$i] != ' ' && $name[$i] != '-') {
                 $result .= ($capitalize ? strtoupper($name[$i]) : strtolower($name[$i]));
                 $capitalize = false;
-            }
-            else{
+            } else {
                 $capitalize = true;
             }
         }
 
         return $result;
     }
-    public static function toKebabCase($name){
+    public static function toKebabCase($name)
+    {
         $name = trim(mb_strtolower($name));
         $name = str_replace(['é', 'è', 'ê', 'ë'], 'e', $name);
         $name = str_replace(['\'', '"'], '', $name);
@@ -39,11 +43,11 @@ class StringsHelper{
         $name = str_replace(['ù', 'û', 'ü'], 'u', $name);
         $name = str_replace('Œ', 'oe', $name);
         $name = str_replace([
-        'é', 'è', 'ê', 'ë',
-        'ç', 'à', 'ô', 'î', 'ï', '&', '--', ' '
+            'é', 'è', 'ê', 'ë',
+            'ç', 'à', 'ô', 'î', 'ï', '&', '--', ' '
         ], [
-        'e', 'e', 'e', 'e',
-        'c', 'a', 'o', 'i', 'i', '-et-', '-', '-'
+            'e', 'e', 'e', 'e',
+            'c', 'a', 'o', 'i', 'i', '-et-', '-', '-'
         ], $name);
 
         preg_match('/([0-9\w\s\-\_\.]+)/', $name, $matchResult);
@@ -53,6 +57,3 @@ class StringsHelper{
         return strtolower($result);
     }
 }
-
-
-?>

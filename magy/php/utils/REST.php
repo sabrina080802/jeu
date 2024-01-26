@@ -1,15 +1,19 @@
-<?php namespace Magy\Utils;
+<?php
 
-abstract class REST{
+namespace Magy\Utils;
+
+abstract class REST
+{
     const INT = 1;
     const TEXT = 2;
     const JSON = 3;
 
-    public function execute(){
+    public function execute()
+    {
         $requiredParams = $this->getParams();
         $data = (object)[];
         $methodData = [];
-        switch($_SERVER['REQUEST_METHOD']){
+        switch ($_SERVER['REQUEST_METHOD']) {
             case 'GET':
                 $methodData = $_GET;
                 break;
@@ -17,17 +21,16 @@ abstract class REST{
                 $methodData = $_POST;
                 break;
         }
-        foreach($requiredParams as $key => $value){
-            if(!isset($methodData[$key])){
+        foreach ($requiredParams as $key => $value) {
+            if (!isset($methodData[$key])) {
                 return false;
             }
 
-            switch($value){
+            switch ($value) {
                 case REST::INT:
-                    if(!is_numeric($methodData[$key])){
+                    if (!is_numeric($methodData[$key])) {
                         return false;
-                    }
-                    else{
+                    } else {
                         $data->$key = intval($methodData[$key]);
                     }
                     break;
@@ -40,7 +43,7 @@ abstract class REST{
 
         $this->process($data);
         $result = $this->getResponse();
-        if(is_object($result) || is_array($result)){
+        if (is_object($result) || is_array($result)) {
             $result = json_encode($result);
         }
 
@@ -48,7 +51,8 @@ abstract class REST{
     }
     public abstract function getParams();
     public abstract function process($data);
-    public function getResponse() { return null; }
+    public function getResponse()
+    {
+        return null;
+    }
 }
-
-?>
