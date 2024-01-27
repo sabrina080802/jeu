@@ -2,6 +2,7 @@
 
 namespace App\API\Account;
 
+use App\Services\AccountService;
 use Magy\Utils\REST;
 use Magy\Managers\DbManager;
 
@@ -17,8 +18,7 @@ class GetAccount extends REST
     }
     public function process($data)
     {
-        $db = DbManager::getDatabase('crossplayarena');
-        $this->account = $db->first('SELECT * FROM account WHERE identifier = @id', $data);
+        $this->account = AccountService::getBy(5);
     }
     public function getResponse()
     {

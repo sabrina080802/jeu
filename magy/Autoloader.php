@@ -9,7 +9,11 @@ function autoload($file)
             $path = MAGY_PATH . 'php/';
             break;
         case 'App':
-            $path = PRIVATE_APP_PATH;
+            if ($components[1] == 'Services') {
+                $path = MAGY_PATH . 'app/';
+            } else {
+                $path = PRIVATE_APP_PATH;
+            }
             break;
         default:
             throw new \Exception("File doesn't exists for namespace \"" . $file . "\"");

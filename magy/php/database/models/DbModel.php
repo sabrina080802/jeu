@@ -1,5 +1,7 @@
 <?php namespace App\Entity;
 
+use Magy\Managers\DbManager;
+
 class {{EntityName}}{
 {{Properties}}
     public function __construct({{PropertiesCtor}}){
@@ -18,6 +20,10 @@ class {{EntityName}}{
      */
     public function flush(){
 
+    }
+
+    public function copy():{{EntityName}}{
+        return new {{EntityName}}({{CopyPropsFill}});
     }
 
     /**

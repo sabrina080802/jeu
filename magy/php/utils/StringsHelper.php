@@ -56,4 +56,8 @@ class StringsHelper
 
         return strtolower($result);
     }
+    public static function toUnderscoreCase($name)
+    {
+        return str_replace('-', '_', self::toKebabCase($name));
+    }
 }

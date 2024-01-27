@@ -18,7 +18,8 @@
         "**/.git/**",
         "**/.vscode/**",
         "**/public/**",
-        "**/magy/php/database/models/**"
+        "**/magy/php/database/models/**",
+        "**/private/services/**"
     ],
     "php.validate.enable": false,
     "php.suggest.basic": false,

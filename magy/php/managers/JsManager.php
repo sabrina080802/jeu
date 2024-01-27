@@ -2,13 +2,23 @@
 
 namespace Magy\Managers;
 
+/**
+ * Provides JS files
+ */
 class JsManager
 {
-    public static function getFramework()
+    /**
+     * @return string The entire Magy JS Framework
+     */
+    public static function getFramework(): string
     {
         return self::includeFiles(MAGY_PATH . 'js/');
     }
-    private static function includeFiles($path)
+    /**
+     * @param string $path A full path containing JS files
+     * @return string include all JS files in $path
+     */
+    private static function includeFiles(string $path): string
     {
         $result = '';
         $fileList = scandir($path);
@@ -23,7 +33,12 @@ class JsManager
 
         return $result;
     }
-    public static function readFile($name)
+    /**
+     * Reads a JS file and returns the content
+     * @param string $name the name of the file. If "_.js" or "**.js", returns the entire content of JS App
+     * @return string JS file content
+     */
+    public static function readFile(string $name): string
     {
         if ($name[0] == '/') {
             $name = substr($name, 1);

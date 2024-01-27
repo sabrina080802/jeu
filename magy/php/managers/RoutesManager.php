@@ -2,6 +2,11 @@
 
 namespace Magy\Managers;
 
+use stdClass;
+
+/**
+ * Provides routing
+ */
 class RoutesManager
 {
     private $controllers = [];
@@ -15,35 +20,37 @@ class RoutesManager
             include $path . $fileList[$i];
         }
     }
-    public function getAPIRequest($url)
-    {
-        // /boutique
-        // account/getAccount
-        $url = explode('/', $url);
-        // ['account', 'getaccount']
 
-        $componentsCount = sizeof($url); // 2
-        $path = API_PATH; //chemin de base
-        $ns = 'App\\API'; //namespace de la classe
+    /**
+     * Returns the namespace of an API Request from the given route
+     * @param string $url The route
+     * @return string If there is any API Request, returns its namespace. Else returns null
+     */
+    public function getAPIRequest(string $url): string
+    {
+        $url = explode('/', $url);
+
+        $componentsCount = sizeof($url);
+        $path = API_PATH;
+        $ns = 'App\\API';
         for ($i = 0; $i < $componentsCount; $i++) {
-            $fileList = scandir($path); //tableau qui contient la liste des fichiers dans le chemin  ["account"]
-            $fileCount = sizeof($fileList); //nbre fichiers
+            $fileList = scandir($path);
+            $fileCount = sizeof($fileList);
 
             if ($i == $componentsCount - 1) {
-                $url[$i] .= '.php'; //on ajoute l'extension à la fin si c'est le dernier du tableau $url
+                $url[$i] .= '.php';
             }
 
-            //parcours la liste des fichiers
             for ($j = 0; $j < $fileCount; $j++) {
                 if (strtolower($fileList[$j]) == strtolower($url[$i])) {
                     $path .= $fileList[$j];
                     if (!is_file($path)) {
-                        $path .= '/'; // construire le chemin pour continuer de parcourir
-                        $ns .= '\\' . $url[$i]; //Construire le namespace pour pouvoir créer l'objet
+                        $path .= '/';
+                        $ns .= '\\' . $url[$i];
                     }
 
                     if ($i == $componentsCount - 1) {
-                        return $ns . '\\' . str_replace('.php', '', $fileList[$j]); //Construire le namespace pour pouvoir créer l'objet
+                        return $ns . '\\' . str_replace('.php', '', $fileList[$j]);
                     } else break;
                 }
             }
@@ -51,18 +58,28 @@ class RoutesManager
 
         return null;
     }
-    public function pageExists($url)
+
+    /**
+     * Check if a page exists on this route
+     * @param string The route
+     * @return bool
+     */
+    public function pageExists(string $url): bool
     {
-        //return file_exists(VIEW_PATH . $url . ".html");
         if (file_exists(VIEW_PATH . $url . ".html")) {
             return true;
         } else {
             return false;
         }
     }
-    public function getPageContent($url)
+
+    /**
+     * Get the page content. If the route is linked to a controller, execute the controller
+     * @param string $url The route
+     * @return string The resulting content of the page
+     */
+    public function getPageContent(string $url): string
     {
-        // recup le contenu de la page
         if (isset($this->controllers[$url])) {
             $ctrlClass = $this->controllers[$url];
             $controller = new $ctrlClass(file_get_contents(VIEW_PATH . $url . ".html"));
@@ -73,7 +90,12 @@ class RoutesManager
 
         return $content;
     }
-    public function setController($pageName, $controllerClass)
+    /**
+     * Config Only. Link a route to a controller class
+     * @param string $pageName The route
+     * @param stdClass $controllerClass The controller class
+     */
+    public function setController($pageName, $controllerClass): void
     {
         $this->controllers[$pageName] = $controllerClass;
     }
