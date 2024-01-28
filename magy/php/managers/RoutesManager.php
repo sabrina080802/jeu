@@ -26,7 +26,7 @@ class RoutesManager
      * @param string $url The route
      * @return string If there is any API Request, returns its namespace. Else returns null
      */
-    public function getAPIRequest(string $url): string
+    public function getAPIRequest(string $url): string|null
     {
         $url = explode('/', $url);
 
