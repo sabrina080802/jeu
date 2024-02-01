@@ -4,7 +4,7 @@ use App\Entity\GamePlatform;
 use Magy\Managers\DbManager;
 use Magy\Utils\ArrayExtension;
 
-abstract class GamePlatformService{
+class GamePlatformService{
 	public static function getAll():ArrayExtension
 	{
 		$db = DbManager::getDatabase('crossplayarena');

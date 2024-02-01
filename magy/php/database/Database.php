@@ -89,7 +89,6 @@ class Database
                     $tableColumns->push($columns[$j]);
                 }
             }
-
             $data = [];
             $this->createTable($t, $tableColumns, $model, $data);
             $this->createService($t, $tableColumns, $serviceModel, $data);
@@ -104,7 +103,6 @@ class Database
             }
 
             file_put_contents($path, $phpServiceModel);
-            //return;
         } else {
             $phpServiceModel = file_get_contents($path);
         }

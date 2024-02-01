@@ -32,6 +32,8 @@ class ServicesManager
 
             $fileContent = str_replace($matches[0][$i], $record, $fileContent);
         }
+
+        $fileContent = str_replace('abstract class', 'class', $fileContent);
         file_put_contents(MAGY_PATH . 'app/services/' . $modelData['EntityName'] . 'Service.php', $fileContent);
     }
     private static function generateFunctionContent($modelData, $columns, $name, $parameters, $returnType)

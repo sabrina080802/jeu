@@ -6,7 +6,7 @@ use App\Entity\Account;
 use Magy\Managers\DbManager;
 use Magy\Utils\ArrayExtension;
 
-abstract class AccountService
+class AccountService
 {
 	public static function getAll():ArrayExtension
 	{

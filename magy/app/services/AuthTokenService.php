@@ -4,7 +4,7 @@ use App\Entity\AuthToken;
 use Magy\Managers\DbManager;
 use Magy\Utils\ArrayExtension;
 
-abstract class AuthTokenService{
+class AuthTokenService{
 	public static function getAll():ArrayExtension
 	{
 		$db = DbManager::getDatabase('crossplayarena');

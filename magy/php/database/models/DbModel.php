@@ -18,7 +18,7 @@ class {{EntityName}}{
     /**
      * Update the record in database with entity data
      */
-    public function flush(){
+    public function update(){
 
     }
 
