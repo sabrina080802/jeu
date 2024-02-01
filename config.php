@@ -22,7 +22,7 @@ const CONFIG_PATH = __DIR__ . '/config/';
 
 
 /** Applications paths */
-const ROOT_PATH = '/dossier/';
+const ROOT_PATH = '/jeu/';
 
 //Php
 const PRIVATE_APP_PATH = __DIR__ . '/private/';

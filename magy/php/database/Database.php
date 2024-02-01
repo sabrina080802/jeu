@@ -160,6 +160,6 @@ class Database
         foreach ($data as $key => $value) {
             $phpEntityModel = preg_replace('/\{\{' . $key . '}\}/', $value, $phpEntityModel);
         }
-        file_put_contents(PRIVATE_APP_PATH . 'entity/' . $entityName . '.php', $phpEntityModel);
+        $result = file_put_contents(PRIVATE_APP_PATH . 'entity/' . $entityName . '.php', $phpEntityModel);
     }
 }

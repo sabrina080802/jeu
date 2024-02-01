@@ -39,7 +39,8 @@ class ConnectPopup extends Popup {
     }
     onBtnRegisterClick() {
         const regPopup = new RegisterPopup();
-        this.hide().then(regPopup.show);
+        this.hide();
+        regPopup.show();
     }
     onBtnConnectClick() {
 
