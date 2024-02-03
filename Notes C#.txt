@@ -1,0 +1,29 @@
+Programme C# :
+Etape 1 :
+-> Faire un système qui détecte les changements sur certains dossiers et leur contenus. Pour ça, utiliser le FileSystemWatcher du C#
+-> Si le fichier est un fichier php, faire une requête vers magy/scripts/config.php. Pour ça, faire une requête http://localhost/../magy/scripts/config.php
+-> Pour le moment, on spécifie le chemin d'accès au projet en dur mais il faudrait faire une UI pour gérer ce genre de choses et déclencher d'autres scripts
+
+Etape 2 :
+-> Surveiller les changements sur la bdd. Quand elle change, appeler magy/scripts/config.php également
+-> Implémenter le driver MySQL (en utilisant la lib). 
+-> Lire les informations dans la bdd information_schema
+-> Comparer la structure avec celle sauvegardée en RAM.
+-> Si il n'y en a pas déjà, il n'y a rien à comparer on save et on appelle le script
+
+
+Structure :
+On va faire deux projets. La première est une app console, c'est celle qu'on lancera
+La deuxième c'est une librairie.
+L'intérêt de séparer les deux c'est que l'app console pourra utiliser la lib sur plusieurs contextes en même temps, indépendant les uns des autres.
+On pourrait le faire sans mais ce sera plus propre au cas où l'on doit intégrer d'autres modules à Magy (je pense par exemple à des préprocesseur ou du hot reload)
+
+Construction de la structure du projet :
+/!\ Bien créer des dossiers avant de faire les commandes sinon ça mettra tout n'importe où, c'est pas que j'aime pas passer l'aspi mais flemme xD
+-> Dans le dossier magy/devtools : Faire un projet app console "Magy" : dotnet new console "Magy"
+-> Faire un projet lib "Magy.Supervisor" : dotnet new classLib "Magy.Supervisor"
+-> Dans le fichier du projet Magy, ajouter :
+<ItemGroup>
+  <ProjectReference Include="Chemin/vers/Magy.Supervisor.csproj" />
+</ItemGroup>
+
