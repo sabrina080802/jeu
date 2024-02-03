@@ -1,7 +1,7 @@
 <?php
 
-include "../config.php";
-include "Autoloader.php";
+include "../../config.php";
+include "../Autoloader.php";
 
 use Magy\Database\Database;
 

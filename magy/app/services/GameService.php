@@ -10,7 +10,7 @@ class GameService{
 		$db = DbManager::getDatabase('crossplayarena');
 		$data = $db->query("SELECT * FROM `game`;", []);
 		for($i = 0;$i < $data->count();$i++){
-			$data->push(new Game($data["identifier"], $data["name"]));
+			$data[$i] = new Game($data[$i]["identifier"], $data[$i]["name"]);
 		}
 		return $data;
 	}

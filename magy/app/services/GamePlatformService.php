@@ -10,7 +10,7 @@ class GamePlatformService{
 		$db = DbManager::getDatabase('crossplayarena');
 		$data = $db->query("SELECT * FROM `game_platform`;", []);
 		for($i = 0;$i < $data->count();$i++){
-			$data->push(new GamePlatform($data["game"], $data["platform"]));
+			$data[$i] = new GamePlatform($data[$i]["game"], $data[$i]["platform"]);
 		}
 		return $data;
 	}

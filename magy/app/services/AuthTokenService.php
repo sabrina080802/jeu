@@ -10,7 +10,7 @@ class AuthTokenService{
 		$db = DbManager::getDatabase('crossplayarena');
 		$data = $db->query("SELECT * FROM `auth_token`;", []);
 		for($i = 0;$i < $data->count();$i++){
-			$data->push(new AuthToken($data["identifier"], $data["token"], $data["account"]));
+			$data[$i] = new AuthToken($data[$i]["identifier"], $data[$i]["token"], $data[$i]["account"]);
 		}
 		return $data;
 	}

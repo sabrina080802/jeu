@@ -13,7 +13,7 @@ class AccountService
 		$db = DbManager::getDatabase('crossplayarena');
 		$data = $db->query("SELECT * FROM `account`;", []);
 		for($i = 0;$i < $data->count();$i++){
-			$data->push(new Account($data["identifier"], $data["email"], $data["pass"], $data["pseudo"], $data["creation_date"]));
+			$data[$i] = new Account($data[$i]["identifier"], $data[$i]["email"], $data[$i]["pass"], $data[$i]["pseudo"], $data[$i]["creation_date"]);
 		}
 		return $data;
 	}

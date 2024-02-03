@@ -99,14 +99,14 @@ class ServicesManager
         $line .= '"' . $query . ';", ' . $params . ']);' . PHP_EOL;
         if ($returnType == 'ArrayExtension') {
             $line .= "\t\tfor(\$i = 0;\$i < \$data->count();\$i++){" . PHP_EOL;
-            $line .= "\t\t\t\$data->push(new " . $modelData['EntityName'] . '(';
+            $line .= "\t\t\t\$data[\$i] = new " . $modelData['EntityName'] . '(';
             for ($i = 0; $i < $columns->count(); $i++) {
                 if ($i > 0) {
                     $line .= ', ';
                 }
-                $line .= '$data["' . $columns[$i]['COLUMN_NAME'] . '"]';
+                $line .= '$data[$i]["' . $columns[$i]['COLUMN_NAME'] . '"]';
             }
-            $line .= '));' . PHP_EOL . "\t\t}" . PHP_EOL;
+            $line .= ');' . PHP_EOL . "\t\t}" . PHP_EOL;
             return $line . "\t\treturn \$data;";
         } else {
             $line .= "\t\treturn \$data == null ? null : new " . $modelData['EntityName'] . '(';
